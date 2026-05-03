@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InzoiGram · Photography</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0a;
+      color: #f0f0f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 600px;
+      margin: 0 auto;
+      padding-bottom: 90px;
+    }
+
+    .top-nav {
+      background: #111;
+      border-bottom: 1px solid #2a2a2a;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-title {
+      font-size: 1.4rem;
+      font-style: italic;
+      color: #c8a96e;
+      font-family: Georgia, serif;
+    }
+
+    .nav-right { display: flex; gap: 18px; }
+    .nav-right svg { width: 22px; height: 22px; stroke: #ccc; fill: none; stroke-width: 1.8; }
+
+    .profile-section {
+      padding: 28px 20px 16px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .avatar-wrap {
+      width: 86px; height: 86px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #c8a96e, #e05c5c, #9b5de5);
+      flex-shrink: 0;
+    }
+
+    .avatar-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: #1e1e1e;
+      border: 3px solid #0a0a0a;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+
+    .profile-details { flex: 1; }
+
+    .username-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px; flex-wrap: wrap;
+    }
+
+    .username { font-size: 1.1rem; font-weight: 600; }
+
+    .edit-btn {
+      background: transparent;
+      border: 1px solid #333;
+      color: #f0f0f0;
+      padding: 5px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .stats-row { display: flex; gap: 24px; margin-bottom: 12px; }
+    .stat-item { text-align: center; }
+    .stat-num { font-weight: 700; font-size: 1rem; display: block; }
+    .stat-lbl { font-size: 0.75rem; color: #888; display: block; }
+
+    .bio { font-size: 0.85rem; line-height: 1.6; color: #aaa; }
+    .bio strong { color: #f0f0f0; }
+    .bio-link { color: #c8a96e; font-size: 0.83rem; display: block; margin-top: 4px; }
+
+    .highlights-row {
+      display: flex; gap: 16px;
+      padding: 8px 20px 18px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .highlights-row::-webkit-scrollbar { display: none; }
+
+    .hl-item {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 5px;
+      flex-shrink: 0; cursor: pointer;
+    }
+
+    .hl-ring { width: 58px; height: 58px; border-radius: 50%; padding: 2px; }
+    .hl-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: #1e1e1e;
+      border: 2px solid #0a0a0a;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .hl-label { font-size: 0.65rem; color: #888; text-align: center; }
+
+    .divider { border: none; border-top: 1px solid #2a2a2a; }
+
+    .tabs-row { display: flex; justify-content: center; }
+
+    .tab-btn {
+      padding: 12px 32px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #666; border: none;
+      border-top: 2px solid transparent;
+      background: transparent; cursor: pointer;
+      font-family: inherit;
+    }
+
+    .tab-btn.active { color: #f0f0f0; border-top-color: #f0f0f0; }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      margin-top: 3px;
+    }
+
+    .photo-cell {
+      aspect-ratio: 1 / 1;
+      background: #1a1a1a;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.8rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-cell:hover { background: #252525; }
+
+    .cell-likes {
+      position: absolute;
+      bottom: 6px; right: 7px;
+      font-size: 0.62rem;
+      color: #c8a96e;
+      font-weight: 600;
+      background: rgba(0,0,0,0.6);
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .lightbox-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .lightbox-bg.open { display: flex; }
+
+    .lb-box {
+      background: #141414;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+    }
+
+    .lb-top {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .lb-av {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #c8a96e, #e05c5c, #9b5de5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    .lb-name { font-size: 0.85rem; font-weight: 600; flex: 1; }
+
+    .lb-close-btn {
+      background: none; border: none;
+      color: #888; font-size: 1.3rem; cursor: pointer;
+    }
+
+    .lb-photo {
+      width: 100%; aspect-ratio: 1 / 1;
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6rem;
+    }
+
+    .lb-body { padding: 14px 16px; }
+
+    .lb-caption {
+      font-size: 0.84rem; line-height: 1.6;
+      color: #aaa; margin-bottom: 10px;
+    }
+    .lb-caption strong { color: #f0f0f0; }
+
+    .lb-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+    .lb-tag { font-size: 0.75rem; color: #c8a96e; }
+
+    .lb-like-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 0; border-top: 1px solid #2a2a2a;
+    }
+
+    .lb-like-row svg { width: 22px; height: 22px; stroke: #f0f0f0; fill: none; stroke-width: 1.8; cursor: pointer; }
+    .like-btn.liked svg { stroke: #e05c5c; fill: #e05c5c; }
+
+    .lb-likes-count { font-size: 0.83rem; font-weight: 600; }
+    .lb-date { font-size: 0.72rem; color: #666; margin-left: auto; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #111;
+      border-top: 1px solid #2a2a2a;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 16px;
+      z-index: 100;
+    }
+
+    .bn-btn {
+      display: flex; align-items: center;
+      background: none; border: none; cursor: pointer;
+      padding: 4px 10px;
+    }
+
+    .bn-btn svg { width: 24px; height: 24px; stroke: #555; fill: none; stroke-width: 1.8; }
+    .bn-btn.active svg { stroke: #f0f0f0; }
+
+    .fab {
+      position: fixed;
+      bottom: 74px; right: 20px;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c8a96e, #e05c5c);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(200,169,110,0.4);
+      z-index: 101;
+    }
+
+    .fab svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2.5; }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav">
+    <div class="site-title">InzoiGram</div>
+    <div class="nav-right">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <div class="profile-section">
+      <div class="avatar-wrap">
+       <div class="avatar-inner"><img src="photos/profile.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+      </div>
+      <div class="profile-details">
+        <div class="username-row">
+          <span class="username">lilymoon</span>
+          <button class="edit-btn">Edit Profile</button>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-num">48</span>
+            <span class="stat-lbl">posts</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">1.2k</span>
+            <span class="stat-lbl">followers</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">340</span>
+            <span class="stat-lbl">following</span>
+          </div>
+        </div>
+        <div class="bio">
+          <strong>Lily</strong><br>
+          📸 Capturing moments<br>
+          🌎 Blissbay / Inzoi Diary
+          <a class="bio-link" href="https://lilymoon.neocities.org/">🔗 lilymoon.stories</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlights-row">
+      <div class="hl-item">
+        <div class="hl-ring" style="background:linear-gradient(135deg,#c8a96e,#e8c88e)"><div class="hl-inner"><img src="photos/highlight1.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div></div>
+        <div class="hl-label">Friends</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-ring" style="background:linear-gradient(135deg,#9b5de5,#c8a96e)"><div class="hl-inner">🌃</div></div>
+        <div class="hl-label">About Me</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-ring" style="background:linear-gradient(135deg,#e05c5c,#9b5de5)"><div class="hl-inner">🌿</div></div>
+        <div class="hl-label">Fashion</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-ring" style="background:linear-gradient(135deg,#5de0c5,#5d8de0)"><div class="hl-inner">🏙</div></div>
+        <div class="hl-label">Photos</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-ring" style="background:linear-gradient(135deg,#e05c9b,#e0855c)"><div class="hl-inner">🎞</div></div>
+        <div class="hl-label">Film</div>
+      </div>
+      <div class="hl-item">
+        <div class="hl-ring" style="background:linear-gradient(135deg,#5d8de0,#5de0c5)"><div class="hl-inner">🌊</div></div>
+        <div class="hl-label">Seascape</div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="tabs-row">
+      <button class="tab-btn active" onclick="setTab(this)">Posts</button>
+      <button class="tab-btn" onclick="setTab(this)">Saved</button>
+      <button class="tab-btn" onclick="setTab(this)">Tagged</button>
+    </div>
+
+    <div class="photo-grid" id="photo-grid"></div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <button class="bn-btn active">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </button>
+    <button class="bn-btn">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+    </button>
+    <button class="bn-btn">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    </button>
+    <button class="bn-btn">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </button>
+    <button class="bn-btn">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+  </div>
+
+  <button class="fab" title="Add Photo">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+
+  <div class="lightbox-bg" id="lightbox">
+    <div class="lb-box">
+      <div class="lb-top">
+        <div class="lb-av"><div class="avatar-inner"><img src="photos/profile.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div></div>
+        <div class="lb-name">lilymoon</div>
+        <button class="lb-close-btn" onclick="closeLightbox()">✕</button>
+      </div>
+      <div class="lb-photo" id="lb-photo"></div>
+      <div class="lb-body">
+        <div class="lb-caption" id="lb-caption"></div>
+        <div class="lb-tags" id="lb-tags"></div>
+        <div class="lb-like-row">
+          <span class="like-btn" id="like-btn" onclick="toggleLike()">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
+          <span class="lb-likes-count" id="lb-likes-count"></span>
+          <span class="lb-date" id="lb-date"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var posts = [
+      { img:"photos/photo11.jpg", caption:"all done, I'm inlove with the sauce 🦐", tags:["#cooking","#cheflily","#blissbay","#inzoilife"], likes:564, date:"APR 28, 2026" },
+      { img:"photos/photo10.jpg", caption:"Making my favorite shrimp recipe 🦐", tags:["#cooking","#cheflily","#blissbay","#inzoilife"], likes:764, date:"APR 28, 2026" },
+      { img:"photos/photo1.jpg", caption:"Me and Ava were lost, so we decided to hang out at my place, by the beach instead! ☀️", tags:["#goldenhour","#sunset","#blissbay","#inzoilife"], likes:284, date:"APR 26, 2026" },
+      { img:"photos/photo2.jpg", caption:"Ava bestie, you've had that expression for so long...", tags:["#selfie","#inzoilife","#blissbay"], likes:412, date:"APR 26, 2026" },
+      { img:"photos/photo3.jpg", caption:"Spent the rest of the day with Sunny! I look so tired...", tags:["#nighttime","#blissbay"], likes:697, date:"APR 26, 2026" },
+      { img:"photos/photo4.jpg", caption:"Ava's favorite pic, so happy for you 🫶", tags:["#blissbay","#street","#myhome"], likes:356, date:"APR 26, 2026" },
+      { img:"photos/photo5.jpg", caption:"Sunny took this one!", tags:["#filmphotography","#blissbay"], likes:523, date:"APR 26, 2026" },
+      { img:"photos/photo6.jpg", caption:"Nights here are the best", tags:["#nighttime","#blissbay","#beach"], likes:148, date:"APR 26, 2026" },
+      { img:"photos/photo7.jpg", caption:"Sunny is stunning, inlove 💕", tags:["#selfie","#blissbay", "#spring"], likes:291, date:"APR 26, 2026" },
+      { img:"photos/photo8.jpg", caption:"Okay, I think this one was good", tags:["#beach","#blissbay"], likes:609, date:"APR 26, 2026" },
+      { img:"photos/photo9.jpg", caption:"Cloud is.....He is ☁️", tags:["#selfie","#myhome","#blissbay","#spring"], likes:674, date:"APR 26, 2026" }
+    ];
+
+    var currentPost = 0;
+    var liked = false;
+
+    var grid = document.getElementById('photo-grid');
+    posts.forEach(function(p, i) {
+      var cell = document.createElement('div');
+      cell.className = 'photo-cell';
+      cell.innerHTML = '<img src="' + p.img + '" alt="photo" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;top:0;left:0;"><div class="cell-likes">&#9829; ' + p.likes + '</div>';
+      cell.onclick = function() { openLightbox(i); };
+      grid.appendChild(cell);
+    });
+
+    function openLightbox(i) {
+      currentPost = i;
+      liked = false;
+      var p = posts[i];
+      document.getElementById('lb-photo').innerHTML = '<img src="' + p.img + '" alt="photo" style="width:100%;height:100%;object-fit:cover;display:block;">';
+      document.getElementById('lb-caption').innerHTML = '<strong>lilymoon</strong> ' + p.caption;
+      document.getElementById('lb-tags').innerHTML = p.tags.map(function(t){ return '<span class="lb-tag">' + t + '</span>'; }).join('');
+      document.getElementById('lb-likes-count').textContent = p.likes + ' likes';
+      document.getElementById('lb-date').textContent = p.date;
+      document.getElementById('like-btn').className = 'like-btn';
+      document.getElementById('lightbox').className = 'lightbox-bg open';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').className = 'lightbox-bg';
+    }
+
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+      if (e.target === this) closeLightbox();
+    });
+
+    function toggleLike() {
+      liked = !liked;
+      var btn = document.getElementById('like-btn');
+      btn.className = liked ? 'like-btn liked' : 'like-btn';
+      var base = posts[currentPost].likes;
+      document.getElementById('lb-likes-count').textContent = (liked ? base + 1 : base) + ' likes';
+    }
+
+    function setTab(el) {
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.className = 'tab-btn'; });
+      el.className = 'tab-btn active';
+    }
+
+    document.querySelectorAll('.bn-btn').forEach(function(b) {
+      b.addEventListener('click', function() {
+        document.querySelectorAll('.bn-btn').forEach(function(x){ x.className = 'bn-btn'; });
+        b.className = 'bn-btn active';
+      });
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+
+</body>
+</html>
