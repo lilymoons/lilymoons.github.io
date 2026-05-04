@@ -567,7 +567,7 @@
       return reply;
     }
 
-    async function sendMessage() {
+async function sendMessage() {
       var input = document.getElementById('msg-input');
       var text = input.value.trim();
       if (!text) return;
@@ -578,9 +578,21 @@
 
       addMessage('Lily', text, true);
 
-      // Pick which character replies — rotate
-      var sender = replyOrder[replyIndex % replyOrder.length];
-      replyIndex++;
+      // Check if message starts with @Name
+      var sender = null;
+      var names = ["Cloud", "Sunny", "Ava", "Lynn"];
+      for (var i = 0; i < names.length; i++) {
+        if (text.toLowerCase().startsWith('@' + names[i].toLowerCase())) {
+          sender = names[i];
+          break;
+        }
+      }
+
+      // If no @ mention, rotate as normal
+      if (!sender) {
+        sender = replyOrder[replyIndex % replyOrder.length];
+        replyIndex++;
+      }
 
       // Small delay before typing appears
       await new Promise(function(r){ setTimeout(r, 600); });
