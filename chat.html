@@ -342,30 +342,6 @@
     @media (max-width: 500px) {
       #chat-screen { max-width: 100%; }
     }
-
-
-    .img-preview-wrap {
-    padding: 6px 14px 0;
-    display: none;
-}
-.img-preview-wrap.show { display: block; }
-.img-preview {
-    width: 80px; height: 80px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid #2a2a2a;
-    display: block;
-}
-.img-remove {
-    font-size: 0.7rem;
-    color: #e05c5c;
-    cursor: pointer;
-    margin-top: 4px;
-    background: none;
-    border: none;
-    font-family: inherit;
-    padding: 0;
-}
   </style>
 </head>
 <body>
@@ -404,23 +380,15 @@
       <div class="system-msg">Cloud, Sunny, Ava and Lynn joined the chat</div>
     </div>
 
-    <div class="img-preview-wrap" id="img-preview-wrap">
-    <img class="img-preview" id="img-preview" src="" alt="preview"/>
-    <button class="img-remove" onclick="removeImage()">✕ Remove image</button>
-</div>
-<div class="input-area">
+    <div class="input-area">
       <div class="lily-input-avatar"><img src="avatars/lily.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
       <div class="msg-input-wrap">
         <div class="msg-input-label">Messaging as Lily</div>
         <textarea class="msg-input" id="msg-input" placeholder="Message as Lily..." rows="1"></textarea>
       </div>
-   <input type="file" id="img-upload" accept="image/*" style="display:none;" onchange="previewImage(event)"/>
-<button class="send-btn" id="img-btn" onclick="document.getElementById('img-upload').click()" style="background:linear-gradient(135deg,#555,#333);" title="Send image">
-    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-</button>
-<button class="send-btn" id="send-btn" onclick="sendMessage()">
-    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-</button>
+      <button class="send-btn" id="send-btn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
     </div>
 
   </div>
@@ -554,79 +522,43 @@
     }
 
     async function getReply(sender, lilyMessage) {
-var currentImageBase64 = null;
-var currentImageType = null;
+      var char = characters[sender];
+      histories[sender].push({ role: "user", content: "Lily: " + lilyMessage });
 
-function previewImage(event) {
-    var file = event.target.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        var result = e.target.result;
-        currentImageBase64 = result.split(',')[1];
-        currentImageType = file.type;
-        document.getElementById('img-preview').src = result;
-        document.getElementById('img-preview-wrap').classList.add('show');
-    };
-    reader.readAsDataURL(file);
-    event.target.value = '';
-}
-
-function removeImage() {
-    currentImageBase64 = null;
-    currentImageType = null;
-    document.getElementById('img-preview-wrap').classList.remove('show');
-    document.getElementById('img-preview').src = '';
-}
-
-async function getReply(sender, lilyMessage, imageBase64, imageType) {
-    var char = characters[sender];
-
-    var userContent;
-    if (imageBase64) {
-        userContent = [
-            { type: "text", text: "Lily: " + (lilyMessage || "sent an image") },
-            { type: "image_url", image_url: { url: "data:" + imageType + ";base64," + imageBase64 } }
-        ];
-    } else {
-        userContent = "Lily: " + lilyMessage;
-    }
-
-    histories[sender].push({ role: "user", content: userContent });
-
-    var messages = [{ role: "system", content: char.system }].concat(
+      var messages = [{ role: "system", content: char.system }].concat(
         histories[sender].map(function(m) {
-            return { role: m.role, content: m.content };
+          return { role: m.role, content: m.content };
         })
-    );
+      );
 
-    var body = {
-        model: "meta-llama/llama-4-scout-17b-16e-instruct",
+      var body = {
+        model: "llama-3.3-70b-versatile",
         messages: messages,
         max_tokens: 150,
         temperature: 0.9
-    };
+      };
 
-    var res = await fetch(
+      var res = await fetch(
         "https://api.groq.com/openai/v1/chat/completions",
         {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + GROQ_API_KEY
-            },
-            body: JSON.stringify(body)
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + GROQ_API_KEY
+          },
+          body: JSON.stringify(body)
         }
-    );
+      );
 
-    var data = await res.json();
-    var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
+      var data = await res.json();
+      var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
         ? data.choices[0].message.content.trim()
         : "...";
 
-    histories[sender].push({ role: "assistant", content: reply });
-    return reply;
-}
+      histories[sender].push({ role: "assistant", content: reply });
+      return reply;
+    }
+
 async function sendMessage() {
       var input = document.getElementById('msg-input');
       var text = input.value.trim();
@@ -636,19 +568,7 @@ async function sendMessage() {
       input.style.height = 'auto';
       document.getElementById('send-btn').disabled = true;
 
-      if (currentImageBase64) {
-    var tempImg = document.createElement('img');
-    tempImg.src = 'data:' + currentImageType + ';base64,' + currentImageBase64;
-    tempImg.style.cssText = 'width:160px;height:160px;object-fit:cover;border-radius:12px;display:block;';
-    var area = document.getElementById('messages-area');
-    var row = document.createElement('div');
-    row.className = 'msg-row lily';
-    row.appendChild(tempImg);
-    area.appendChild(row);
-    area.scrollTop = area.scrollHeight;
-} else {
-    addMessage('Lily', text, true);
-}
+      addMessage('Lily', text, true);
 
       // Check if message starts with @Name
       var sender = null;
@@ -675,8 +595,7 @@ async function sendMessage() {
       await new Promise(function(r){ setTimeout(r, delay); });
 
       try {
-        var reply = await getReply(sender, text, currentImageBase64, currentImageType);
-removeImage();
+        var reply = await getReply(sender, text);
         removeTyping();
         addMessage(sender, reply, false);
       } catch(e) {
