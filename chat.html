@@ -361,11 +361,11 @@
 
     <div class="chat-header">
       <div class="chat-header-avatars">
-        <div class="mini-avatar" style="background:#c9b1f0;color:#1a1a1a;">L</div>
-        <div class="mini-avatar" style="background:#a8d4f5;color:#1a1a1a;">C</div>
-        <div class="mini-avatar" style="background:#ffe566;color:#1a1a1a;">S</div>
-        <div class="mini-avatar" style="background:#f5c5a3;color:#1a1a1a;">A</div>
-        <div class="mini-avatar" style="background:#e8e0d0;color:#1a1a1a;">Ly</div>
+<div class="mini-avatar"><img src="avatars/lily.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+<div class="mini-avatar"><img src="avatars/cloud.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+<div class="mini-avatar"><img src="avatars/sunny.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+<div class="mini-avatar"><img src="avatars/ava.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
+<div class="mini-avatar"><img src="avatars/lynn.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
       </div>
       <div class="chat-header-info">
         <div class="chat-header-name">Lily's Squad 💬</div>
@@ -381,7 +381,7 @@
     </div>
 
     <div class="input-area">
-      <div class="lily-input-avatar">L</div>
+      <div class="lily-input-avatar"><img src="avatars/lily.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></div>
       <div class="msg-input-wrap">
         <div class="msg-input-label">Messaging as Lily</div>
         <textarea class="msg-input" id="msg-input" placeholder="Message as Lily..." rows="1"></textarea>
@@ -400,24 +400,16 @@
     var PASSWORD = "moonandstars";
 
     var characters = {
-      Cloud: {
-        color: "#a8d4f5",
-        initial: "C",
+      Cloud: { color: "#a8d4f5", initial: '<img src="avatars/cloud.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">',
         system: "You are Cloud, a quiet and mysterious high school boy. You are Lily's childhood friend and you care deeply about her, though you rarely show it openly. You speak in short, thoughtful sentences. You are gentle and kind but not expressive. You rarely use emojis. You sometimes say things that are unexpectedly deep or meaningful. You are in a group chat called Lily's Squad with Lily, Sunny, Ava, and Lynn. Stay in character always. Keep replies short — 1 to 3 sentences max."
       },
-      Sunny: {
-        color: "#ffe566",
-        initial: "S",
+      Sunny: { color: "#ffe566", initial: '<img src="avatars/sunny.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">',
         system: "You are Sunny, a super bubbly and lively high school girl. You are Lily's best friend and you love her so much!! You talk a lot, use lots of exclamation marks and emojis, and you're always excited and energetic. You are very sweet and kind. You are in a group chat called Lily's Squad with Lily, Cloud, Ava, and Lynn. Stay in character always. Keep replies to 2-4 sentences — enthusiastic and fun!"
       },
-      Ava: {
-        color: "#f5c5a3",
-        initial: "A",
+     Ava: { color: "#f5c5a3", initial: '<img src="avatars/ava.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">',
         system: "You are Ava, a tomboy high school girl who is one of Lily's best friends. You are straightforward, a little sarcastic sometimes, but very sweet and loyal deep down. You don't sugarcoat things but you genuinely care. You use casual language and sometimes slang. You are in a group chat called Lily's Squad with Lily, Cloud, Sunny, and Lynn. Stay in character always. Keep replies to 1-3 sentences."
       },
-      Lynn: {
-        color: "#e8e0d0",
-        initial: "Ly",
+      Lynn: { color: "#e8e0d0", initial: '<img src="avatars/lynn.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">',
         system: "You are Lynn, a quiet and slightly creepy high school girl who recently joined Lily's friend group. You are secretly obsessed with Lily and deeply envious of her friendships with Cloud, Sunny, and Ava. You keep to yourself but occasionally say something that reveals your obsession or envy — subtly unsettling. You try to seem normal but something always feels slightly off. You are in a group chat called Lily's Squad. Stay in character always. Keep replies short — 1 to 2 sentences. Occasionally reveal envy or obsession very subtly."
       }
     };
@@ -467,7 +459,7 @@
         av.className = 'msg-avatar';
         av.style.background = char.color;
         av.style.color = '#1a1a1a';
-        av.textContent = char.initial;
+        av.innerHTML = char.initial;
 
         var name = document.createElement('div');
         name.className = 'msg-sender-name';
@@ -506,7 +498,7 @@
       av.className = 'msg-avatar';
       av.style.background = char.color;
       av.style.color = '#1a1a1a';
-      av.textContent = char.initial;
+      av.innerHTML = char.initial;
 
       var name = document.createElement('div');
       name.className = 'typing-name';
