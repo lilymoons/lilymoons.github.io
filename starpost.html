@@ -366,6 +366,36 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
+
+
+    .back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 999;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s;
+}
+
+.back-btn:hover { background: rgba(255,255,255,0.12); }
+
+.back-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: #f0f0f0;
+  fill: none;
+  stroke-width: 2;
+}
   </style>
 </head>
 <body>
@@ -739,5 +769,8 @@
     renderFeed();
   </script>
 
+  <a class="back-btn" href="index.html" title="Home">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+</a>
 </body>
 </html>
