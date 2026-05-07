@@ -405,6 +405,159 @@
     .suggested-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
     .suggested-name { font-size: 0.68rem; font-weight: 600; color: rgba(232,228,240,0.8); }
     .suggested-handle { font-size: 0.62rem; color: rgba(232,228,240,0.35); }
+
+    /* ── EXPLORE SECTIONS ── */
+    .explore-section {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .explore-title {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(232,228,240,0.3);
+      margin-bottom: 14px;
+    }
+
+    /* Activity ticker */
+    .activity-list { display: flex; flex-direction: column; gap: 10px; }
+    .activity-item {
+      display: flex; align-items: center; gap: 10px;
+      animation: fadeUp 0.4s ease both;
+    }
+    .activity-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .activity-text { font-size: 0.82rem; color: rgba(232,228,240,0.7); line-height: 1.4; }
+    .activity-text strong { color: #e8e4f0; }
+    .activity-time { font-size: 0.7rem; color: rgba(232,228,240,0.28); margin-left: auto; flex-shrink: 0; }
+
+    /* Trending posts */
+    .trending-post {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; gap: 10px; align-items: flex-start;
+      animation: fadeUp 0.4s ease both;
+    }
+    .trending-post:last-child { border-bottom: none; padding-bottom: 0; }
+    .trending-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 800; flex-shrink: 0; color: #1a1a2e;
+    }
+    .trending-body { flex: 1; }
+    .trending-name { font-size: 0.8rem; font-weight: 700; color: #e8e4f0; }
+    .trending-handle { font-size: 0.7rem; color: rgba(232,228,240,0.3); margin-left: 4px; }
+    .trending-text { font-size: 0.82rem; color: rgba(232,228,240,0.75); line-height: 1.5; margin-top: 3px; }
+    .trending-likes { font-size: 0.7rem; color: rgba(232,228,240,0.3); margin-top: 6px; }
+
+    /* Mood board */
+    .moodboard-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+      border-radius: 12px; overflow: hidden;
+    }
+    .moodboard-tile {
+      aspect-ratio: 1; border-radius: 4px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+    }
+    .moodboard-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* School events */
+    .event-list { display: flex; flex-direction: column; gap: 9px; }
+    .event-item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 10px 14px;
+    }
+    .event-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .event-body { flex: 1; }
+    .event-name { font-size: 0.82rem; font-weight: 600; color: #e8e4f0; }
+    .event-when { font-size: 0.7rem; color: rgba(232,228,240,0.35); margin-top: 1px; }
+
+    /* Who to follow */
+    .follow-list { display: flex; flex-direction: column; gap: 12px; }
+    .follow-item { display: flex; align-items: center; gap: 12px; }
+    .follow-avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 800; color: #1a1a2e;
+      overflow: hidden;
+    }
+    .follow-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .follow-info { flex: 1; min-width: 0; }
+    .follow-name { font-size: 0.84rem; font-weight: 700; color: #e8e4f0; }
+    .follow-handle { font-size: 0.72rem; color: rgba(232,228,240,0.35); }
+    .follow-bio { font-size: 0.74rem; color: rgba(232,228,240,0.5); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .follow-btn-sm {
+      background: transparent; border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px; padding: 5px 14px;
+      color: #e8e4f0; font-size: 0.74rem; font-weight: 600;
+      font-family: inherit; cursor: pointer; flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .follow-btn-sm:hover { background: rgba(255,255,255,0.07); }
+    .follow-btn-sm.following {
+      background: rgba(201,177,240,0.15); border-color: #c9b1f0; color: #c9b1f0;
+    }
+
+    /* Poll widget */
+    .poll-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 16px;
+    }
+    .poll-author { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .poll-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 800; color: #1a1a2e;
+      overflow: hidden;
+    }
+    .poll-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .poll-author-name { font-size: 0.8rem; font-weight: 700; color: #e8e4f0; }
+    .poll-author-handle { font-size: 0.7rem; color: rgba(232,228,240,0.35); margin-left: 4px; }
+    .poll-question { font-size: 0.9rem; color: #e8e4f0; margin-bottom: 12px; line-height: 1.5; }
+    .poll-option {
+      position: relative; margin-bottom: 8px; border-radius: 8px;
+      overflow: hidden; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: border-color 0.2s;
+    }
+    .poll-option:last-child { margin-bottom: 0; }
+    .poll-option:hover { border-color: rgba(201,177,240,0.4); }
+    .poll-option.voted { border-color: #c9b1f0; }
+    .poll-bar {
+      position: absolute; inset: 0; border-radius: 8px;
+      background: rgba(201,177,240,0.12); transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    .poll-option.voted .poll-bar { background: rgba(201,177,240,0.2); }
+    .poll-label {
+      position: relative; z-index: 1;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 12px; font-size: 0.82rem; color: rgba(232,228,240,0.85);
+    }
+    .poll-pct { font-size: 0.74rem; font-weight: 700; color: rgba(232,228,240,0.4); }
+    .poll-option.voted .poll-pct { color: #c9b1f0; }
+    .poll-meta { font-size: 0.7rem; color: rgba(232,228,240,0.25); margin-top: 10px; }
+
+    /* Starred posts */
+    .starred-post {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .starred-post:last-child { border-bottom: none; padding-bottom: 0; }
+    .starred-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .starred-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 800; overflow: hidden;
+    }
+    .starred-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .starred-name { font-size: 0.8rem; font-weight: 700; }
+    .starred-handle { font-size: 0.7rem; color: rgba(232,228,240,0.35); margin-left: 3px; }
+    .starred-text { font-size: 0.84rem; color: rgba(232,228,240,0.75); line-height: 1.5; padding-left: 38px; }
+    .star-icon { margin-left: auto; font-size: 0.8rem; color: #f0d898; }
   </style>
 </head>
 <body>
@@ -506,6 +659,8 @@
 
     <!-- EXPLORE VIEW -->
     <div id="explore-view" style="display:none;">
+
+      <!-- YOUR SQUAD -->
       <div class="suggested-section">
         <div class="suggested-title">✦ Your Squad</div>
         <div class="suggested-row">
@@ -539,10 +694,85 @@
           </div>
         </div>
       </div>
-      <div style="text-align:center;padding:40px 20px;color:rgba(232,228,240,0.2);font-size:0.84rem;">
-        <div style="font-size:1.8rem;margin-bottom:10px;">✦</div>
-        Tap a profile above to visit them
+
+      <!-- ACTIVITY TICKER -->
+      <div class="explore-section">
+        <div class="explore-title">✦ Recent Activity</div>
+        <div class="activity-list" id="activity-list"></div>
       </div>
+
+      <!-- POLL WIDGET -->
+      <div class="explore-section">
+        <div class="explore-title">✦ Polls</div>
+        <div id="polls-container"></div>
+      </div>
+
+      <!-- TRENDING POSTS -->
+      <div class="explore-section">
+        <div class="explore-title">✦ Trending at school</div>
+        <div id="trending-posts"></div>
+      </div>
+
+      <!-- STARRED / BOOKMARKED POSTS -->
+      <div class="explore-section">
+        <div class="explore-title">✦ Lily's Favorites</div>
+        <div id="starred-posts"></div>
+      </div>
+
+      <!-- SCHOOL EVENTS -->
+      <div class="explore-section">
+        <div class="explore-title">✦ What's Happening</div>
+        <div class="event-list">
+          <div class="event-item">
+            <div class="event-icon">🎭</div>
+            <div class="event-body">
+              <div class="event-name">Drama Club Showcase</div>
+              <div class="event-when">Friday · Main Hall · 6pm</div>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-icon">☕</div>
+            <div class="event-body">
+              <div class="event-name">Café closed tomorrow</div>
+              <div class="event-when">Reopens Monday as usual</div>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-icon">📸</div>
+            <div class="event-body">
+              <div class="event-name">Photography Club — open submission</div>
+              <div class="event-when">Drop entries by Thursday</div>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-icon">🌧️</div>
+            <div class="event-body">
+              <div class="event-name">Outdoor practice cancelled</div>
+              <div class="event-when">Gym rescheduled · check board</div>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-icon">✨</div>
+            <div class="event-body">
+              <div class="event-name">Rooftop stargazing night</div>
+              <div class="event-when">Saturday · bring a blanket</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHO TO FOLLOW -->
+      <div class="explore-section">
+        <div class="explore-title">✦ People You Might Know</div>
+        <div class="follow-list" id="follow-list"></div>
+      </div>
+
+      <!-- MOOD BOARD -->
+      <div class="explore-section">
+        <div class="explore-title">✦ Mood Board</div>
+        <div class="moodboard-grid" id="moodboard-grid"></div>
+      </div>
+
     </div>
 
   </div><!-- end page -->
@@ -656,6 +886,7 @@
 
 
     // VIEW SWITCHING
+    var exploreBuilt = false;
     function switchView(view) {
       document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
       if(view==='lily'){
@@ -666,6 +897,7 @@
         document.getElementById('lily-view').style.display='none';
         document.getElementById('explore-view').style.display='block';
         document.querySelectorAll('.nav-tab')[1].classList.add('active');
+        if(!exploreBuilt){ buildExplore(); exploreBuilt=true; }
       }
     }
 
@@ -1114,6 +1346,196 @@
       post.likes=post.liked?post.likes+1:post.likes-1;
       btn.className='action-btn'+(post.liked?' liked':'');
       btn.querySelector('span').textContent=post.likes;
+    }
+
+
+    // ── EXPLORE PAGE POPULATION ─────────────────────────────────────────────
+
+    var activityFeed = [
+      { name:"Sunny", handle:"@sunnydays__", color:"#ffe566", action:"liked Lily's last post", time:"2m" },
+      { name:"Cloud", handle:"@cloud.exe", color:"#a8d4f5", action:"posted something new", time:"14m" },
+      { name:"Mia", handle:"@mia.writes", color:"#f5a8d4", action:"commented on a trending post", time:"31m" },
+      { name:"Ava", handle:"@ava.kicks", color:"#f5c5a3", action:"tagged Lily in a story", time:"1h" },
+      { name:"Jake", handle:"@jakeishere", color:"#a8c5f5", action:"started following you", time:"2h" },
+      { name:"Lynn", handle:"@justlynn__", color:"#e8e0d0", action:"saved one of Lily's posts", time:"3h" },
+      { name:"Zara", handle:"@zaravibes", color:"#d4a8f5", action:"reacted to Cloud's post", time:"4h" },
+      { name:"Nora", handle:"@noranotes", color:"#f5a8a8", action:"mentioned @lilymoon", time:"5h" },
+    ];
+
+    var trendingPosts = [
+      { name:"Jake", handle:"@jakeishere", color:"#a8c5f5", text:"okay who left their headphones in the library again. they've been there THREE days", likes:204 },
+      { name:"Mia", handle:"@mia.writes", color:"#f5a8d4", text:"the vending machine gave me two things and i feel like the universe is apologizing for something", likes:589 },
+      { name:"Zara", handle:"@zaravibes", color:"#d4a8f5", text:"why does the school bathroom always smell like someone made a decision they regret", likes:1203 },
+      { name:"Riley", handle:"@reillyy", color:"#a8f5c5", text:"mr henderson said 'let's make this quick' and then talked for 47 minutes. i timed it.", likes:872 },
+      { name:"Leo", handle:"@leothinks", color:"#a8d4f5", text:"overheard: 'i'm not tired i'm just resting my eyes' bro you were SNORING in calc", likes:441 },
+      { name:"Ellie", handle:"@ellieee_", color:"#f5f0a8", text:"the way the parking lot looks at golden hour is genuinely unreal i don't make the rules", likes:317 },
+    ];
+
+    var starredPosts = [
+      { name:"Cloud", handle:"@cloud.exe", color:"#a8d4f5", avatar:"avatars/cloud.jpg", initial:"C", text:"the sky was the exact color of nothing today. i liked it." },
+      { name:"Sunny", handle:"@sunnydays__", color:"#ffe566", avatar:"avatars/sunny.jpg", initial:"S", text:"reminder that you are doing AMAZING and i love you and everything is going to be okay 💛" },
+      { name:"Ava", handle:"@ava.kicks", color:"#f5c5a3", avatar:"avatars/ava.jpg", initial:"A", text:"lily made me watch that movie again. i pretended i didn't like it. i liked it." },
+    ];
+
+    var polls = [
+      {
+        author:"Cloud", handle:"@cloud.exe", color:"#a8d4f5", avatar:"avatars/cloud.jpg", initial:"C",
+        question:"night sky or rainy day?",
+        options:[{label:"🌙 night sky", votes:142},{label:"🌧️ rainy day", votes:98}],
+        voters:"240 votes"
+      },
+      {
+        author:"Sunny", handle:"@sunnydays__", color:"#ffe566", avatar:"avatars/sunny.jpg", initial:"S",
+        question:"what's the vibe rn ✨",
+        options:[{label:"cozy & soft", votes:310},{label:"chaotic but fine", votes:275},{label:"actually thriving", votes:89}],
+        voters:"674 votes"
+      }
+    ];
+
+    var followSuggestions = [
+      { name:"Mia", handle:"@mia.writes", color:"#f5a8d4", bio:"writes things. feels things. sometimes both at once", initial:"M" },
+      { name:"Jake", handle:"@jakeishere", color:"#a8c5f5", bio:"just vibing honestly. huge coffee dependency", initial:"J" },
+      { name:"Zara", handle:"@zaravibes", color:"#d4a8f5", bio:"fashion & chaos. not necessarily in that order", initial:"Z" },
+      { name:"Theo", handle:"@theostuff", color:"#c5a8f5", bio:"films things. mostly sunsets and vending machines", initial:"T" },
+      { name:"Nora", handle:"@noranotes", color:"#f5a8a8", bio:"annotates everything. even texts. especially texts", initial:"N" },
+    ];
+
+    var moodTiles = ["🌙","✨","🌧️","🍵","📷","🌸","🎧","🌿","💜"];
+
+    function buildExplore(){
+      buildActivityFeed();
+      buildPolls();
+      buildTrendingPosts();
+      buildStarredPosts();
+      buildFollowList();
+      buildMoodBoard();
+    }
+
+    function buildActivityFeed(){
+      var list = document.getElementById('activity-list');
+      if(!list) return;
+      list.innerHTML = '';
+      activityFeed.forEach(function(a, i){
+        var el = document.createElement('div');
+        el.className = 'activity-item';
+        el.style.animationDelay = (i * 0.05) + 's';
+        el.innerHTML =
+          '<div class="activity-dot" style="background:'+a.color+'"></div>' +
+          '<div class="activity-text"><strong>'+a.name+'</strong> '+a.action+'</div>' +
+          '<div class="activity-time">'+a.time+'</div>';
+        list.appendChild(el);
+      });
+    }
+
+    function buildPolls(){
+      var container = document.getElementById('polls-container');
+      if(!container) return;
+      container.innerHTML = '';
+      polls.forEach(function(poll, pi){
+        var total = poll.options.reduce(function(s,o){ return s+o.votes; }, 0);
+        var card = document.createElement('div');
+        card.className = 'poll-card';
+        card.style.marginBottom = pi < polls.length-1 ? '12px' : '0';
+        var optHtml = poll.options.map(function(opt, oi){
+          var pct = Math.round(opt.votes/total*100);
+          return '<div class="poll-option" data-poll="'+pi+'" data-opt="'+oi+'" onclick="votePoll('+pi+','+oi+')">' +
+            '<div class="poll-bar" style="transform:scaleX('+pct/100+')"></div>' +
+            '<div class="poll-label"><span>'+opt.label+'</span><span class="poll-pct">'+pct+'%</span></div>' +
+            '</div>';
+        }).join('');
+        card.innerHTML =
+          '<div class="poll-author">' +
+            '<div class="poll-avatar" style="background:'+poll.color+'"><img src="'+poll.avatar+'" onerror="this.style.display=String.fromCharCode(110,111,110,101)"  style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>' +
+            '<span class="poll-author-name">'+poll.author+'</span><span class="poll-author-handle">'+poll.handle+'</span>' +
+          '</div>' +
+          '<div class="poll-question">'+poll.question+'</div>' +
+          optHtml +
+          '<div class="poll-meta" id="poll-meta-'+pi+'">'+poll.voters+' · tap to vote</div>';
+        container.appendChild(card);
+      });
+    }
+
+    function votePoll(pi, oi){
+      var opts = document.querySelectorAll('[data-poll="'+pi+'"]');
+      opts.forEach(function(el){ el.classList.remove('voted'); });
+      opts[oi].classList.add('voted');
+      var meta = document.getElementById('poll-meta-'+pi);
+      if(meta){ var t=meta.textContent.split('·')[0].trim(); meta.textContent = t + ' · voted ✦'; }
+    }
+
+    function buildTrendingPosts(){
+      var area = document.getElementById('trending-posts');
+      if(!area) return;
+      area.innerHTML = '';
+      trendingPosts.forEach(function(p){
+        var el = document.createElement('div');
+        el.className = 'trending-post';
+        el.innerHTML =
+          '<div class="trending-avatar" style="background:'+p.color+'">'+p.name[0]+'</div>' +
+          '<div class="trending-body">' +
+            '<span class="trending-name">'+p.name+'</span><span class="trending-handle">'+p.handle+'</span>' +
+            '<div class="trending-text">'+p.text+'</div>' +
+            '<div class="trending-likes">♥ '+p.likes.toLocaleString()+'</div>' +
+          '</div>';
+        area.appendChild(el);
+      });
+    }
+
+    function buildStarredPosts(){
+      var area = document.getElementById('starred-posts');
+      if(!area) return;
+      area.innerHTML = '';
+      starredPosts.forEach(function(p){
+        var el = document.createElement('div');
+        el.className = 'starred-post';
+        el.innerHTML =
+          '<div class="starred-header">' +
+            '<div class="starred-avatar" style="background:'+p.color+'"><img src="'+p.avatar+'" onerror="this.style.display=String.fromCharCode(110,111,110,101)"  style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>' +
+            '<span class="starred-name" style="color:'+p.color+'">'+p.name+'</span><span class="starred-handle">'+p.handle+'</span>' +
+            '<span class="star-icon">✦</span>' +
+          '</div>' +
+          '<div class="starred-text">'+p.text+'</div>';
+        area.appendChild(el);
+      });
+    }
+
+    function buildFollowList(){
+      var list = document.getElementById('follow-list');
+      if(!list) return;
+      list.innerHTML = '';
+      followSuggestions.forEach(function(u){
+        var el = document.createElement('div');
+        el.className = 'follow-item';
+        el.innerHTML =
+          '<div class="follow-avatar" style="background:'+u.color+'">'+u.initial+'</div>' +
+          '<div class="follow-info">' +
+            '<div class="follow-name">'+u.name+'</div>' +
+            '<div class="follow-handle">'+u.handle+'</div>' +
+            '<div class="follow-bio">'+u.bio+'</div>' +
+          '</div>' +
+          '<button class="follow-btn-sm" onclick="toggleFollow(this)">Follow</button>';
+        list.appendChild(el);
+      });
+    }
+
+    function toggleFollow(btn){
+      btn.classList.toggle('following');
+      btn.textContent = btn.classList.contains('following') ? 'Following ✦' : 'Follow';
+    }
+
+    function buildMoodBoard(){
+      var grid = document.getElementById('moodboard-grid');
+      if(!grid) return;
+      grid.innerHTML = '';
+      moodTiles.forEach(function(tile){
+        var el = document.createElement('div');
+        el.className = 'moodboard-tile';
+        // Soft gradient backgrounds with emoji — replace emoji with img src if you have images
+        var hue = Math.floor(Math.random()*360);
+        el.style.background = 'linear-gradient(135deg, hsla('+hue+',30%,15%,1), hsla('+(hue+40)+',40%,20%,1))';
+        el.textContent = tile;
+        grid.appendChild(el);
+      });
     }
 
     // STARS
