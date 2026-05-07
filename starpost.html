@@ -599,7 +599,7 @@
         </div>
         <div class="profile-name">Lily</div>
         <div class="profile-username">@lilymoon</div>
-        <div class="profile-bio" id="lily-bio">✦ living in my own little world 🌙 | photography & daydreams | just a girl with too many feelings and not enough words</div>
+        <div class="profile-bio" id="lily-bio">✦ living in my own little world 🌙 | photography & daydreams | love my squad forever</div>
         <div class="profile-stats">
           <div class="profile-stat">
             <span class="profile-stat-num" id="post-count">0</span>
@@ -1406,17 +1406,19 @@
       { name:"Nora", handle:"@noranotes", color:"#f5a8a8", bio:"annotates everything. even texts. especially texts", initial:"N" },
     ];
 
-       // ✦ Replace these with your raw GitHub image URLs
+    // ✦ Replace these with your raw GitHub image URLs
     // Format: https://raw.githubusercontent.com/USERNAME/REPO/refs/heads/main/photos/filename.jpg
-    var moodTiles = ["https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard1.jpg",
-                     "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard2.jpg",
-                     "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard3.jpg",
-                     "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard4.jpg",
-                     "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard5.jpg",
-                     "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard6.jpg",
-                     "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard7.jpg",
-                     "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard8.jpg",
-                     "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard9.jpg"];
+    var moodTiles = [
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard1.jpg",
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard2.jpg",
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard3.jpg",
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard4.jpg",
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard5.jpg",
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard6.jpg",
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard7.jpg",
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard8.jpg",
+      "https://raw.githubusercontent.com/lilymoons/lilymoons.github.io/refs/heads/main/photos/moodboard9.jpg",
+    ];
 
     function buildExplore(){
       buildActivityFeed();
@@ -1543,13 +1545,15 @@
       var grid = document.getElementById('moodboard-grid');
       if(!grid) return;
       grid.innerHTML = '';
-      moodTiles.forEach(function(tile){
+      moodTiles.forEach(function(url){
         var el = document.createElement('div');
         el.className = 'moodboard-tile';
-        // Soft gradient backgrounds with emoji — replace emoji with img src if you have images
-        var hue = Math.floor(Math.random()*360);
-        el.style.background = 'linear-gradient(135deg, hsla('+hue+',30%,15%,1), hsla('+(hue+40)+',40%,20%,1))';
-        el.textContent = tile;
+        el.style.background = '#0e0e1a';
+        var img = document.createElement('img');
+        img.src = url;
+        img.alt = '';
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;border-radius:4px;';
+        el.appendChild(img);
         grid.appendChild(el);
       });
     }
