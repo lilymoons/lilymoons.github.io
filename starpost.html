@@ -375,34 +375,7 @@
     }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    /* ── PASSWORD ── */
-    .pw-overlay {
-      position: fixed; inset: 0; background: rgba(6,8,18,0.98);
-      z-index: 200; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 16px; text-align: center; padding: 40px 24px;
-    }
-    .pw-lock { font-size: 2.5rem; }
-    .pw-title { font-size: 1.2rem; font-family: Georgia, serif; font-style: italic; color: #c9b1f0; }
-    .pw-sub { font-size: 0.8rem; color: rgba(232,228,240,0.3); }
-    .pw-input {
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; padding: 11px 18px; color: #e8e4f0;
-      font-size: 0.95rem; font-family: inherit; width: 220px;
-      text-align: center; letter-spacing: 0.1em; outline: none;
-      transition: border-color 0.2s;
-    }
-    .pw-input:focus { border-color: #c9b1f0; }
-    .pw-btn {
-      background: linear-gradient(135deg, #c9b1f0, #9b5de5);
-      border: none; border-radius: 12px; padding: 11px 28px;
-      color: #fff; font-size: 0.88rem; font-weight: 600;
-      font-family: inherit; cursor: pointer; width: 220px;
-    }
-    .pw-error { font-size: 0.78rem; color: #e05c5c; display: none; }
-    .pw-error.show { display: block; }
-    .compose-area { display: none; }
-    .compose-area.unlocked { display: flex; }
+    .compose-area { display: flex; }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -442,16 +415,6 @@
     <div class="sky-grad"></div>
     <div class="moon"></div>
     <div id="stars-layer"></div>
-  </div>
-
-  <!-- PASSWORD OVERLAY -->
-  <div class="pw-overlay" id="pw-overlay">
-    <div class="pw-lock">🌙</div>
-    <div class="pw-title">✦ Starpost</div>
-    <div class="pw-sub">Enter the password to post as Lily</div>
-    <input class="pw-input" type="password" id="pw-input" placeholder="password"/>
-    <div class="pw-error" id="pw-error">Wrong password ✨</div>
-    <button class="pw-btn" onclick="checkPassword()">Enter</button>
   </div>
 
   <!-- MAIN PAGE -->
@@ -630,9 +593,6 @@
     var k1 = "gsk_5BRnFhDZ8P9hSdyFZEehWGdy";
     var k2 = "b3FY2U7nVhp8o5BsilfhNX26fZIP";
     var GROQ_API_KEY = k1 + k2;
-    var PASSWORD = "moonandstars";
-    var unlocked = false;
-
     var anonUsers = [
       {name:"Jake", handle:"@jakeishere", color:"#a8c5f5"},
       {name:"Mia", handle:"@mia.writes", color:"#f5a8d4"},
@@ -694,18 +654,7 @@
     var lilyPosts = JSON.parse(localStorage.getItem(LILY_POSTS_KEY) || '[]');
     var ocPostsCache = JSON.parse(localStorage.getItem(OC_POSTS_KEY) || '{}');
 
-    // PASSWORD
-    function checkPassword() {
-      if (document.getElementById('pw-input').value.trim() === PASSWORD) {
-        unlocked = true;
-        document.getElementById('pw-overlay').style.display = 'none';
-        document.getElementById('compose-area').classList.add('unlocked');
-      } else {
-        document.getElementById('pw-error').classList.add('show');
-        document.getElementById('pw-input').value = '';
-      }
-    }
-    document.addEventListener('keydown', function(e){ if(e.key==='Enter'&&!unlocked) checkPassword(); });
+
 
     // VIEW SWITCHING
     function switchView(view) {
