@@ -375,7 +375,6 @@
     }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    .compose-area { display: flex; }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -750,7 +749,7 @@
       card.className='post-card';
       card.id='post-'+post.id;
 
-      var html='<div class="post-left"><div class="post-avatar"><img src="'+avatar+'" onerror="this.parentElement.textContent=\'L'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div></div>';
+      var html='<div class="post-left"><div class="post-avatar"><img src="'+avatar+'" onerror="this.parentElement.textContent=String.fromCharCode(76)" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div></div>';
       html+='<div class="post-right">';
       html+='<div class="post-header-row"><span class="post-name">'+name+'</span><span class="post-handle">'+handle+'</span><span class="post-dot">·</span><span class="post-time-label">'+timeAgo(post.ts)+'</span></div>';
       if(post.text) html+='<div class="post-body">'+escHtml(post.text)+'</div>';
@@ -843,6 +842,7 @@
 
     // GENERATE COMMENTS
     async function generateComments(post){
+      try{
       var allFriends=["Cloud","Sunny","Ava","Lynn"];
       var shuffled=allFriends.sort(function(){ return Math.random()-0.5; });
       var friendCount=Math.random()<0.5?2:3;
@@ -908,6 +908,7 @@
           } catch(e){ removeTypingComment(post.id, anon.handle); }
         }
       }
+      } catch(e){ console.warn("generateComments failed:", e); }
     }
 
     function updateCommentCount(post){
