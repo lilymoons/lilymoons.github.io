@@ -1192,6 +1192,12 @@
     // ts offsets: 0 = now, 86400000 = 1 day ago, 172800000 = 2 days ago, etc.
     var ocHardcodedPosts = {
       Cloud: [
+         {
+          text: "the sea has many secrets",
+          img: "photos/cloudphoto1.jpg",
+          ts: Date.now() - 86400000 * 0.5,
+          likes: 273
+        },
         {
           text: "the sky was the exact color of nothing today. i liked it.",
           img: null,
@@ -1400,7 +1406,7 @@
       { name:"Nora", handle:"@noranotes", color:"#f5a8a8", bio:"annotates everything. even texts. especially texts", initial:"N" },
     ];
 
-    var moodTiles = ["🌙","✨","🌧️","🍵","📷","🌸","🎧","🌿","💜"];
+    var moodTiles = ["photos/moodboard1.jpg","photos/moodboard2.jpg","photos/moodboard3.jpg","photos/moodboard4.jpg","photos/moodboard5.jpg","photos/moodboard6.jpg","photos/moodboard7.jpg","photos/moodboard8.jpg","photos/moodboard9.jpg"];
 
     function buildExplore(){
       buildActivityFeed();
