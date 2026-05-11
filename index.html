@@ -394,6 +394,11 @@
   background: linear-gradient(135deg, #3a1a5e, #c9b1f0);
 }
 
+    .app-starcord .app-icon-face {
+      background: linear-gradient(135deg, #0d0b1e, #3a2a6e);
+      border: 1px solid rgba(201,177,240,0.25);
+    }
+
     /* Notification badge */
     .app-badge {
       position: absolute;
@@ -583,6 +588,24 @@
             </svg>
           </div>
           <div class="app-label">Messages</div>
+        </a>
+
+        <a class="app-icon app-starcord" href="starcord.html">
+          <div class="app-icon-face">
+            <svg viewBox="0 0 64 64" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Chat bubble body -->
+              <rect x="8" y="14" width="48" height="32" rx="10" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.85)" stroke-width="2.5"/>
+              <!-- Tail -->
+              <path d="M18 46 L14 56 L28 46" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.85)" stroke-width="2.5" stroke-linejoin="round"/>
+              <!-- Big center star -->
+              <text x="32" y="36" font-size="18" fill="rgba(201,177,240,1)" text-anchor="middle" dominant-baseline="middle">✦</text>
+              <!-- Small stars -->
+              <text x="18" y="24" font-size="9" fill="rgba(255,229,102,0.85)" text-anchor="middle" dominant-baseline="middle">✦</text>
+              <text x="46" y="24" font-size="8" fill="rgba(168,212,245,0.85)" text-anchor="middle" dominant-baseline="middle">✦</text>
+              <text x="46" y="40" font-size="7" fill="rgba(245,168,212,0.8)" text-anchor="middle" dominant-baseline="middle">✦</text>
+            </svg>
+          </div>
+          <div class="app-label">Starcord</div>
         </a>
         
       </div>
