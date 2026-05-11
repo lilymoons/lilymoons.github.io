@@ -188,14 +188,14 @@
   <div class="server-rail">
     <div class="server-icon active" style="background:linear-gradient(135deg,#c9b1f0,#a8d4f5)" title="Lily's World" onclick="setServer(this)">✦</div>
     <div class="server-sep"></div>
-    <div class="server-icon" style="background:linear-gradient(135deg,#a8d4f5,#7ab8e8)" title="star-study" onclick="setServer(this)">📚</div>
-    <div class="server-icon" style="background:linear-gradient(135deg,#ffe566,#f5c44a)" title="cloud's corner" onclick="setServer(this)">☁️</div>
-    <div class="server-icon" style="background:linear-gradient(135deg,#f5c4a0,#e8a07a)" title="ava's gym" onclick="setServer(this)">🏋️</div>
-    <div class="server-icon" style="background:linear-gradient(135deg,#e8dcc8,#c8b89a)" title="lynn's library" onclick="setServer(this)">🌙</div>
-    <div class="server-icon" style="background:linear-gradient(135deg,#f5a8d4,#e07ab8)" title="sunny's bakery" onclick="setServer(this)">🌸</div>
+   <div class="server-icon" style="background:linear-gradient(...)" title="Server Study" onclick="setServer(this)"><img src="avatars/server-study.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+   <div class="server-icon" style="background:linear-gradient(...)" title="Cafe Sim" onclick="setServer(this)"><img src="avatars/cafesim.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+   <div class="server-icon" style="background:linear-gradient(...)" title="Lumenia" onclick="setServer(this)"><img src="avatars/lumenia.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+   <div class="server-icon" style="background:linear-gradient(...)" title="Sunny's Talk Club" onclick="setServer(this)"><img src="avatars/sunnystalkclub.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+   <div class="server-icon" style="background:linear-gradient(...)" title="Blissbay Book Club" onclick="setServer(this)"><img src="avatars/bookclub.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
     <div class="server-sep"></div>
-    <div class="server-icon" style="background:rgba(255,255,255,0.05)" title="class 3B" onclick="setServer(this)">🎓</div>
-    <div class="server-icon" style="background:rgba(255,255,255,0.05)" title="nightowls" onclick="setServer(this)">🦉</div>
+   <div class="server-icon" style="background:linear-gradient(...)" title="Server Class" onclick="setServer(this)"><img src="avatars/server-class.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+   <div class="server-icon" style="background:linear-gradient(...)" title="Nightowls" onclick="setServer(this)"><img src="avatars/nightowls.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
     <div class="server-sep"></div>
     <div class="server-add" title="Add server">+</div>
   </div>
@@ -421,7 +421,7 @@ function initSquad() {
   banner.className = 'welcome-banner';
   banner.innerHTML =
     '<div class="welcome-icon"><img src="avatars/starcord1.jpg"></div>' +
-    '<div class="welcome-title"># the-squad</div>' +
+    '<div class="welcome-icon" style="padding:0;overflow:hidden;"><img src="avatars/squad-banner.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>' +
     '<div class="welcome-sub">The very beginning of the squad\'s history ✦ just you, Cloud, Sunny, Ava, and Lynn. say anything.</div>';
   c.appendChild(banner);
 
