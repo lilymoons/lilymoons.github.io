@@ -302,17 +302,17 @@
       </div>
       <!-- Sunny -->
       <div class="member-item">
-        <div class="member-avatar" style="background:linear-gradient(135deg,#ffe566,#f5c44a);color:#3a3000"><img src="avatars/sunny.jpg" onerror="this.classList.add('failed')"/><span class="av-initial">S</span><div class="member-status s-online"></div></div>
+        <div class="member-avatar" style="background:linear-gradient(135deg,#ffe566,#f5c44a);color:#3a3000"><img src="avatars/sunny.jpg" onerror="this.classList.add('failed')"/><div class="member-status s-online"></div></div>
         <div class="member-info"><div class="member-name" style="color:var(--yellow)">sunny</div><div class="member-sub">🌻 sunshine mode on</div></div>
       </div>
       <!-- Ava -->
       <div class="member-item">
-        <div class="member-avatar" style="background:linear-gradient(135deg,#f5c4a0,#e8a07a);color:#3a1a00"><img src="avatars/ava.jpg" onerror="this.classList.add('failed')"/><span class="av-initial">A</span><div class="member-status s-idle"></div></div>
+        <div class="member-avatar" style="background:linear-gradient(135deg,#f5c4a0,#e8a07a);color:#3a1a00"><img src="avatars/ava.jpg" onerror="this.classList.add('failed')"/><div class="member-status s-idle"></div></div>
         <div class="member-info"><div class="member-name" style="color:var(--peach)">ava</div><div class="member-sub">🏃 at the gym</div></div>
       </div>
       <!-- Lynn -->
       <div class="member-item">
-        <div class="member-avatar" style="background:linear-gradient(135deg,#e8dcc8,#c8b89a);color:#3a3020"><img src="avatars/lynn.jpg" onerror="this.classList.add('failed')"/><span class="av-initial">L</span><div class="member-status s-dnd"></div></div>
+        <div class="member-avatar" style="background:linear-gradient(135deg,#e8dcc8,#c8b89a);color:#3a3020"><img src="avatars/lynn.jpg" onerror="this.classList.add('failed')"/><div class="member-status s-dnd"></div></div>
         <div class="member-info"><div class="member-name" style="color:var(--beige)">lynn</div><div class="member-sub">👁️ watching...</div></div>
       </div>
     </div>
@@ -353,7 +353,6 @@ var OCs = {
     color: "var(--blue)",
     bg: "linear-gradient(135deg,#a8d4f5,#7ab8e8)",
     avatar: "avatars/cloud.jpg",
-    initial: "C",
     system: "You are Cloud, an OC in Lily's friend group in a Discord-like chat called Starcord. You are mysterious, soft, and thoughtful — like a cloudy night sky. You speak with quiet depth, usually lowercase, and sometimes say something a little poetic or cryptic. You genuinely care about Lily and the squad. Keep your replies short — 1 to 3 sentences. No asterisks, no roleplay formatting. Just casual chat."
   },
   sunny: {
@@ -361,7 +360,6 @@ var OCs = {
     color: "var(--yellow)",
     bg: "linear-gradient(135deg,#ffe566,#f5c44a)",
     avatar: "avatars/sunny.jpg",
-    initial: "S",
     system: "You are Sunny, an OC in Lily's friend group in a Discord-like chat called Starcord. You are bubbly, cheerful, and full of warmth — like a ray of sunshine. You use exclamation marks and occasional emoji, and you're always upbeat and enthusiastic. You adore Lily and your squad. Keep your replies short — 1 to 3 sentences. No asterisks. Just natural, warm chat."
   },
   ava: {
@@ -369,7 +367,6 @@ var OCs = {
     color: "var(--peach)",
     bg: "linear-gradient(135deg,#f5c4a0,#e8a07a)",
     avatar: "avatars/ava.jpg",
-    initial: "A",
     system: "You are Ava, an OC in Lily's friend group in a Discord-like chat called Starcord. You are a tomboy — chill, blunt, sporty, and dependably loyal. You don't sugarcoat things but you're kind underneath. You use casual slang, lowercase, short sentences. You care about the squad even if you don't always show it. Keep replies short — 1 to 3 sentences. No asterisks."
   },
   lynn: {
@@ -377,7 +374,6 @@ var OCs = {
     color: "var(--beige)",
     bg: "linear-gradient(135deg,#e8dcc8,#c8b89a)",
     avatar: "avatars/lynn.jpg",
-    initial: "L",
     system: "You are Lynn, an OC in Lily's friend group in a Discord-like chat called Starcord. You are gentle but slightly intense — like a devoted, observant fan who notices everything. You're harmlessly creepy in a soft way. You sometimes mention details others would overlook. You are deeply loyal to Lily. Keep replies short — 1 to 3 sentences. Lowercase, quiet intensity, no asterisks."
   }
 };
@@ -476,7 +472,7 @@ function sendMessage() {
   input.value = '';
   autoResize(input);
 
-  addMessage({ oc: 'lily', name: 'lily', color: 'var(--lily)', bg: 'linear-gradient(135deg,var(--lily),#e07ab8)', avatar: 'avatars/lily.jpg', initial: 'L', text: text, time: getTime(0), isLily: true });
+  addMessage({ oc: 'lily', name: 'lily', color: 'var(--lily)', bg: 'linear-gradient(135deg,var(--lily),#e07ab8)', avatar: 'avatars/lily.jpg', text: text, time: getTime(0), isLily: true });
 
   if (currentChannel === 'squad') {
     chatHistory.push({ role: 'user', content: text });
