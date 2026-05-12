@@ -158,6 +158,34 @@
 
     @media (max-width: 900px) { .members-panel { display: none; } }
     @media (max-width: 640px) { .channel-sidebar { display: none; } :root { --server-w: 56px; } }
+
+    /* ── EMOJI PICKER ── */
+    .emoji-picker { position: absolute; bottom: 100%; right: 0; margin-bottom: 8px; background: #1a1830; border: 1px solid var(--border); border-radius: 14px; padding: 12px; width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); z-index: 200; display: none; }
+    .emoji-picker.open { display: block; }
+    .emoji-search { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; color: var(--text); font-size: 0.82rem; font-family: inherit; outline: none; margin-bottom: 8px; }
+    .emoji-search::placeholder { color: var(--muted); }
+    .emoji-cats { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+    .emoji-cat-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 3px 6px; border-radius: 6px; transition: background 0.15s; }
+    .emoji-cat-btn:hover, .emoji-cat-btn.active { background: rgba(201,177,240,0.2); }
+    .emoji-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; max-height: 180px; overflow-y: auto; }
+    .emoji-grid::-webkit-scrollbar { width: 4px; }
+    .emoji-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    .emoji-btn { background: none; border: none; cursor: pointer; font-size: 1.3rem; padding: 4px; border-radius: 6px; transition: background 0.15s; line-height: 1; }
+    .emoji-btn:hover { background: rgba(255,255,255,0.08); }
+    .chat-input-wrap { position: relative; }
+
+    /* ── IMAGE MESSAGES ── */
+    .msg-image { max-width: 320px; max-height: 240px; border-radius: 10px; margin-top: 4px; display: block; object-fit: cover; cursor: pointer; transition: opacity 0.15s; }
+    .msg-image:hover { opacity: 0.88; }
+    .msg-link { color: var(--blue); text-decoration: underline; word-break: break-all; }
+    .msg-link:hover { opacity: 0.8; }
+
+    /* ── IMAGE PREVIEW ── */
+    .img-preview { position: relative; display: inline-block; margin: 6px 0 0; }
+    .img-preview img { max-width: 200px; max-height: 120px; border-radius: 8px; display: block; }
+    .img-preview-remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: #e05c5c; border: none; cursor: pointer; color: #fff; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+    .input-preview-bar { padding: 8px 16px 0; display: none; }
+    .input-preview-bar.has-img { display: block; }
   </style>
 </head>
 <body>
@@ -271,16 +299,29 @@
     </div>
 
     <div class="chat-input-wrap">
+      <div class="input-preview-bar" id="input-preview-bar">
+        <div class="img-preview" id="img-preview-box">
+          <img id="img-preview-img" src="" alt="preview"/>
+          <button class="img-preview-remove" onclick="clearImageAttach()">✕</button>
+        </div>
+      </div>
       <div class="chat-input-box">
-        <button class="input-plus">+</button>
+        <button class="input-plus" onclick="triggerImageUpload()" title="Attach image">+</button>
+        <input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="handleImageAttach(event)"/>
         <textarea class="chat-input" id="chat-input" rows="1"
           placeholder="Message #the-squad — try @cloud, @sunny, @ava or @lynn"
           onkeydown="handleKey(event)"
           oninput="autoResize(this)"></textarea>
-        <div class="input-actions">
-          <button class="input-action">😊</button>
+        <div class="input-actions" style="position:relative">
+          <button class="input-action" id="emoji-toggle-btn" onclick="toggleEmojiPicker(event)" title="Emoji">😊</button>
           <button class="input-action">🎞️</button>
           <button class="input-action" onclick="sendMessage()">✦</button>
+          <!-- Emoji Picker -->
+          <div class="emoji-picker" id="emoji-picker">
+            <input class="emoji-search" id="emoji-search" placeholder="Search emoji..." oninput="filterEmojis(this.value)"/>
+            <div class="emoji-cats" id="emoji-cats"></div>
+            <div class="emoji-grid" id="emoji-grid"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -439,6 +480,8 @@ function initSquad() {
     addMessage({ oc: s.oc, name: oc.name, color: oc.color, bg: oc.bg, avatar: oc.avatar, initial: oc.initial, text: s.text, time: getTime(-4) });
     chatHistory.push({ role: 'assistant', content: '[' + oc.name + ']: ' + s.text });
   });
+
+  startIdleScheduler();
 }
 
 // ─────────────────────────────────────────────
@@ -472,15 +515,17 @@ function switchChannel(el, ch, desc) {
 function sendMessage() {
   var input = document.getElementById('chat-input');
   var text = input.value.trim();
-  if (!text) return;
+  var imageUrl = window._pendingImageUrl || null;
+  if (!text && !imageUrl) return;
   input.value = '';
   autoResize(input);
+  clearImageAttach();
 
-  addMessage({ oc: 'lily', name: 'lily', color: 'var(--lily)', bg: 'linear-gradient(135deg,var(--lily),#e07ab8)', avatar: 'avatars/lily.jpg', initial: 'L', text: text, time: getTime(0), isLily: true });
+  addMessage({ oc: 'lily', name: 'lily', color: 'var(--lily)', bg: 'linear-gradient(135deg,var(--lily),#e07ab8)', avatar: 'avatars/lily.jpg', initial: 'L', text: text, imageUrl: imageUrl, time: getTime(0), isLily: true });
 
   if (currentChannel === 'squad') {
-    chatHistory.push({ role: 'user', content: text });
-    triggerResponses(text);
+    if (text) chatHistory.push({ role: 'user', content: text });
+    if (text) triggerResponses(text);
   }
 }
 
@@ -503,13 +548,8 @@ function triggerResponses(userMsg) {
 
   var responders;
   if (mentioned.length > 0) {
-    // Mentioned OCs always reply; maybe 1 more chimes in (30% chance)
-    var extras = ocOrder.filter(function(k){ return mentioned.indexOf(k) === -1; });
-    var extra = [];
-    if (Math.random() < 0.3 && extras.length > 0) {
-      extra.push(extras[Math.floor(Math.random() * extras.length)]);
-    }
-    responders = mentioned.concat(extra);
+    // Only mentioned OCs reply — no random extras
+    responders = mentioned;
   } else {
     // No mention — pick 1–3 random OCs as before
     var pool = ocOrder.slice();
@@ -581,10 +621,19 @@ function addMessage(msg) {
     ? '<img src="' + msg.avatar + '" onerror="this.classList.add(\'failed\')">'
     : '';
 
+  // Build message body: image + text
+  var bodyHtml = '';
+  if (msg.imageUrl) {
+    bodyHtml += '<img class="msg-image" src="' + msg.imageUrl + '" alt="image" onclick="window.open(this.src,\'_blank\')"/>';
+  }
+  if (msg.text) {
+    bodyHtml += '<div class="msg-text">' + escHtml(msg.text) + '</div>';
+  }
+
   if (compact) {
     el.innerHTML =
       '<div class="msg-avatar" style="background:' + msg.bg + '">' + avatarInner + '</div>' +
-      '<div class="msg-content"><div class="msg-text">' + escHtml(msg.text) + '</div></div>';
+      '<div class="msg-content">' + bodyHtml + '</div>';
   } else {
     el.innerHTML =
       '<div class="msg-avatar" style="background:' + msg.bg + '">' + avatarInner + '</div>' +
@@ -593,7 +642,7 @@ function addMessage(msg) {
           '<span class="msg-name" style="color:' + msg.color + '">' + msg.name + '</span>' +
           '<span class="msg-time">Today at ' + msg.time + '</span>' +
         '</div>' +
-        '<div class="msg-text">' + escHtml(msg.text) + '</div>' +
+        bodyHtml +
       '</div>';
   }
 
@@ -621,6 +670,8 @@ function escHtml(str) {
   var mentionColors = { cloud: 'var(--blue)', sunny: 'var(--yellow)', ava: 'var(--peach)', lynn: 'var(--beige)', lily: 'var(--lily)' };
   var mentionBg = { cloud: 'rgba(168,212,245,0.12)', sunny: 'rgba(255,229,102,0.12)', ava: 'rgba(245,196,160,0.12)', lynn: 'rgba(232,220,200,0.12)', lily: 'rgba(245,168,212,0.12)' };
   var s = str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  // Linkify URLs
+  s = s.replace(/(https?:\/\/[^\s<]+)/g, '<a class="msg-link" href="$1" target="_blank" rel="noopener">$1</a>');
   ['cloud','sunny','ava','lynn','lily'].forEach(function(name) {
     s = s.replace(new RegExp('@' + name, 'gi'), '<span class="mention" style="color:' + mentionColors[name] + ';background:' + mentionBg[name] + '">@' + name + '</span>');
   });
@@ -646,6 +697,240 @@ function toggleMembers() {
 function setServer(el) {
   document.querySelectorAll('.server-icon').forEach(function(s){ s.classList.remove('active'); });
   el.classList.add('active');
+}
+
+// ─────────────────────────────────────────────
+// IMAGE ATTACH
+// ─────────────────────────────────────────────
+window._pendingImageUrl = null;
+
+function triggerImageUpload() {
+  document.getElementById('img-file-input').click();
+}
+
+function handleImageAttach(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    window._pendingImageUrl = ev.target.result;
+    var bar = document.getElementById('input-preview-bar');
+    var img = document.getElementById('img-preview-img');
+    img.src = ev.target.result;
+    bar.classList.add('has-img');
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function clearImageAttach() {
+  window._pendingImageUrl = null;
+  document.getElementById('input-preview-bar').classList.remove('has-img');
+  document.getElementById('img-preview-img').src = '';
+}
+
+// ─────────────────────────────────────────────
+// EMOJI PICKER
+// ─────────────────────────────────────────────
+var EMOJI_DATA = {
+  '😊': ['😀','😃','😄','😁','😆','😅','😂','🤣','😊','😇','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋','😛','😝','😜','🤪','🤨','🧐','🤓','😎','🥸','🤩','🥳','😏','😒','😞','😔','😟','😕','🙁','☹️','😣','😖','😫','😩','🥺','😢','😭','😤','😠','😡','🤬','🤯','😳','🥵','🥶','😱','😨','😰','😥','😓','🤗','🤔','🫣','🤭','🫢','🫡','🤫','🤥','😶','😐','😑','😬','🙄','😯','😦','😧','😮','😲','🥱','😴','🤤','😪','😵','🤐','🥴','🤢','🤧','🤠'],
+  '❤️': ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❤️‍🔥','❤️‍🩹','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✨','⭐','🌟','💫','⚡','🔥','🌈','☁️','🌙','🌸','🌺','🌻','🌹','🪷','💐','🍀','🌿','🍃'],
+  '👋': ['👋','🤚','🖐️','✋','🖖','👌','🤌','🤏','✌️','🤞','🫰','🤟','🤘','🤙','👈','👉','👆','🖕','👇','☝️','🫵','👍','👎','✊','👊','🤛','🤜','👏','🙌','🫶','🤲','🤝','🙏','✍️','💅','🤳','💪','🦾','🦿','🦵','🦶'],
+  '🐶': ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🙈','🙉','🙊','🐔','🐧','🐦','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🪱','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🪳','🦂','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🦭','🐊','🐅','🐆','🦓','🦍','🦧','🦣','🐘','🦛','🦏','🐪','🐫','🦒','🦘','🦬','🐃','🐂','🐄','🐎','🐖','🐏','🐑','🦙','🐐','🦌','🐕','🐩','🦮','🐕‍🦺','🐈','🐈‍⬛','🐓','🦃','🦤','🦚','🦜','🦢','🦩','🕊️','🐇','🦝','🦨','🦡','🦫','🦦','🦥','🐁','🐀','🐿️','🦔'],
+  '🍕': ['🍕','🍔','🌮','🌯','🥪','🥙','🧆','🥚','🍳','🧇','🥞','🧈','🍗','🍖','🦴','🌭','🍟','🥓','🍱','🍘','🍙','🍚','🍛','🍜','🍝','🍠','🍢','🍣','🍤','🍥','🥮','🍡','🥟','🥠','🥡','🦪','🍦','🍧','🍨','🍩','🍪','🎂','🍰','🧁','🥧','🍫','🍬','🍭','🍮','🍯','🍺','🍻','🥂','🍷','🥃','🍸','🍹','🧃','🥤','🧋','☕','🍵','🧉','🍶','🍾'],
+  '⚽': ['⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🥏','🎱','🏓','🏸','🏒','🏑','🥍','🏏','🪃','🥅','⛳','🪁','🏹','🎣','🤿','🥊','🥋','🎽','🛹','🛼','🛷','⛸️','🥌','🎿','⛷️','🏂','🪂','🏋️','🤼','🤸','⛹️','🤺','🏇','🧘','🏄','🏊','🚣','🧗','🚴','🏆','🥇','🥈','🥉','🏅','🎖️','🎗️','🎫','🎟️','🎪','🤹','🎭','🎨','🎬','🎤','🎧','🎼','🎵','🎶','🎷','🪗','🎸','🎹','🎺','🎻','🪕','🥁','🪘'],
+  '🌍': ['🌍','🌎','🌏','🌐','🗺️','🧭','🌋','⛰️','🏔️','🗻','🏕️','🏖️','🏜️','🏝️','🏞️','🏟️','🏛️','🏗️','🧱','🏘️','🏚️','🏠','🏡','🏢','🏣','🏤','🏥','🏦','🏨','🏩','🏪','🏫','🏬','🏭','🏯','🏰','💒','🗼','🗽','⛪','🕌','🛕','🕍','⛩️','🕋','⛲','⛺','🌁','🌃','🏙️','🌄','🌅','🌆','🌇','🌉','🌌','🌠','🎇','🎆','🌸','🌼','🌻','🌺','🌹','🌷','🌱','🌿','☘️','🍀','🎋','🍃','🍂','🍁','🍄','🐚','🪸','🪨','🌾','💐','🌵','🎄','🌲','🌳','🌴'],
+  '💬': ['💬','💭','🗯️','💡','🔔','🔕','📣','📢','🔊','🔇','📻','📺','📷','📸','📹','🎥','📽️','🎞️','📞','☎️','📟','📠','📺','💻','🖥️','🖨️','⌨️','🖱️','💾','💿','📀','🧮','🎮','🕹️','📱','⌚','📷','🔭','🔬','🧬','🧪','🧫','🧲','💊','🩺','🩻','🩹','🩼','🩽','🧸','🪆','🖼️','🎭','🎨','🎪']
+};
+
+var EMOJI_CATS_META = [
+  { icon: '😊', key: '😊', label: 'Faces' },
+  { icon: '❤️', key: '❤️', label: 'Hearts & Nature' },
+  { icon: '👋', key: '👋', label: 'Hands' },
+  { icon: '🐶', key: '🐶', label: 'Animals' },
+  { icon: '🍕', key: '🍕', label: 'Food' },
+  { icon: '⚽', key: '⚽', label: 'Activities' },
+  { icon: '🌍', key: '🌍', label: 'Places' },
+  { icon: '💬', key: '💬', label: 'Objects' }
+];
+
+var currentEmojiCat = '😊';
+
+function buildEmojiPicker() {
+  var cats = document.getElementById('emoji-cats');
+  EMOJI_CATS_META.forEach(function(cat) {
+    var btn = document.createElement('button');
+    btn.className = 'emoji-cat-btn' + (cat.key === currentEmojiCat ? ' active' : '');
+    btn.title = cat.label;
+    btn.textContent = cat.icon;
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      currentEmojiCat = cat.key;
+      document.querySelectorAll('.emoji-cat-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderEmojiGrid('');
+      document.getElementById('emoji-search').value = '';
+    };
+    cats.appendChild(btn);
+  });
+  renderEmojiGrid('');
+}
+
+function renderEmojiGrid(filter) {
+  var grid = document.getElementById('emoji-grid');
+  grid.innerHTML = '';
+  var list;
+  if (filter) {
+    // Search all categories
+    list = [];
+    Object.values(EMOJI_DATA).forEach(function(arr) {
+      arr.forEach(function(e) { if (list.indexOf(e) === -1) list.push(e); });
+    });
+  } else {
+    list = EMOJI_DATA[currentEmojiCat] || [];
+  }
+  list.forEach(function(emoji) {
+    var btn = document.createElement('button');
+    btn.className = 'emoji-btn';
+    btn.textContent = emoji;
+    btn.title = emoji;
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      insertEmoji(emoji);
+    };
+    grid.appendChild(btn);
+  });
+}
+
+function filterEmojis(val) {
+  // Just show all emojis from all cats when searching (simplified)
+  renderEmojiGrid(val.trim());
+}
+
+function insertEmoji(emoji) {
+  var input = document.getElementById('chat-input');
+  var start = input.selectionStart;
+  var end = input.selectionEnd;
+  var text = input.value;
+  input.value = text.slice(0, start) + emoji + text.slice(end);
+  input.selectionStart = input.selectionEnd = start + emoji.length;
+  input.focus();
+  autoResize(input);
+}
+
+function toggleEmojiPicker(e) {
+  e.stopPropagation();
+  var picker = document.getElementById('emoji-picker');
+  picker.classList.toggle('open');
+}
+
+// Close emoji picker when clicking outside
+document.addEventListener('click', function(e) {
+  var picker = document.getElementById('emoji-picker');
+  if (picker && picker.classList.contains('open')) {
+    if (!picker.contains(e.target) && e.target.id !== 'emoji-toggle-btn') {
+      picker.classList.remove('open');
+    }
+  }
+});
+
+// Build picker on load
+buildEmojiPicker();
+
+// ─────────────────────────────────────────────
+// OC IDLE CHAT (OCs talk among themselves / message lily when idle)
+// ─────────────────────────────────────────────
+var idleTimer = null;
+var lastActivityTime = Date.now();
+var idleChatting = false;
+
+// Track user activity
+document.addEventListener('keydown', function() { lastActivityTime = Date.now(); });
+document.addEventListener('click', function() { lastActivityTime = Date.now(); });
+
+function scheduleIdleChat() {
+  if (idleTimer) clearTimeout(idleTimer);
+  // Wait between 40s and 90s of inactivity before OCs chat
+  var wait = 40000 + Math.random() * 50000;
+  idleTimer = setTimeout(function() {
+    var idleMs = Date.now() - lastActivityTime;
+    if (idleMs > 35000 && !isAIReplying && currentChannel === 'squad') {
+      triggerIdleOCChat();
+    } else {
+      scheduleIdleChat();
+    }
+  }, wait);
+}
+
+function triggerIdleOCChat() {
+  if (isAIReplying) { scheduleIdleChat(); return; }
+  // Pick 1 or 2 OCs to chat
+  var pool = ocOrder.slice();
+  for (var i = pool.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+  }
+  var n = Math.random() < 0.35 ? 2 : 1;
+  var speakers = pool.slice(0, n);
+
+  isAIReplying = true;
+  var delay = 0;
+
+  speakers.forEach(function(ocKey, idx) {
+    setTimeout(function() {
+      getIdleOCMessage(ocKey, idx === speakers.length - 1);
+    }, delay);
+    delay += 1500 + Math.random() * 1000;
+  });
+}
+
+function getIdleOCMessage(ocKey, isLast) {
+  var oc = OCs[ocKey];
+  showTyping(oc.name);
+
+  // Build a context about the last few messages, framed as idle chat
+  var recentCtx = chatHistory.slice(-6);
+
+  // Prompt asking OC to initiate or continue naturally, possibly addressing lily
+  var idlePrompt = 'The group chat has been quiet for a while. Lily (the user) might be away or just not chatting. Send a short natural message to the group — you can chat with the other OCs, share a random thought, ask lily something, or just fill the silence. Keep it casual and in character. Do not repeat something already said recently.';
+
+  fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{ role: 'system', content: oc.system + '\n\n' + idlePrompt }].concat(recentCtx),
+      max_tokens: 80,
+      temperature: 0.92
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    hideTyping();
+    var reply = '...';
+    if (data.choices && data.choices[0] && data.choices[0].message) {
+      reply = data.choices[0].message.content.trim().replace(/^\[?\w+\]?:\s*/, '');
+    }
+    addMessage({ oc: ocKey, name: oc.name, color: oc.color, bg: oc.bg, avatar: oc.avatar, initial: oc.initial, text: reply, time: getTime(0) });
+    chatHistory.push({ role: 'assistant', content: '[' + oc.name + ']: ' + reply });
+    if (isLast) {
+      isAIReplying = false;
+      scheduleIdleChat();
+    }
+  })
+  .catch(function() {
+    hideTyping();
+    if (isLast) {
+      isAIReplying = false;
+      scheduleIdleChat();
+    }
+  });
+}
+
+// Start idle chat scheduling after squad init
+function startIdleScheduler() {
+  lastActivityTime = Date.now();
+  scheduleIdleChat();
 }
 
 // ─────────────────────────────────────────────
