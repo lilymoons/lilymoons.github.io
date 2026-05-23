@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#060812" />
+  <title>Lily's Schedule ✦</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #060812;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      color: #c8cbdf;
+    }
+    .phone {
+      width: 100%; max-width: 390px;
+      min-height: 100vh;
+      background: #0a0d1a;
+      display: flex; flex-direction: column;
+    }
+
+    /* Status bar */
+    .status-bar {
+      display: flex; justify-content: space-between;
+      padding: 14px 22px 8px;
+      font-size: 12px; color: #8891b8; font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    /* Header */
+    .header-area {
+      padding: 8px 22px 14px;
+      border-bottom: 1px solid #141830;
+      flex-shrink: 0;
+    }
+    .back-link {
+      font-size: 12px; color: #5c6494;
+      text-decoration: none; display: inline-flex;
+      align-items: center; gap: 4px; margin-bottom: 10px;
+    }
+    .back-link:hover { color: #7b83c9; }
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; color: #e8eaf6; margin-bottom: 3px;
+    }
+    .page-title span { color: #a07fc9; }
+    .page-sub { font-size: 11px; color: #4a5280; letter-spacing: 0.07em; text-transform: uppercase; }
+
+    /* Day selector */
+    .day-selector {
+      display: flex; gap: 6px;
+      padding: 14px 14px 0;
+      overflow-x: auto; flex-shrink: 0;
+      scrollbar-width: none;
+    }
+    .day-selector::-webkit-scrollbar { display: none; }
+    .day-pill {
+      flex-shrink: 0;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 2px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid #1a1f3a;
+      background: #0e1123;
+      cursor: pointer;
+      transition: all 0.15s;
+      min-width: 46px;
+    }
+    .day-pill:hover { border-color: #262d52; }
+    .day-pill.active {
+      background: #161b38;
+      border-color: #2e3668;
+    }
+    .day-pill.today-pill .day-dot {
+      display: block;
+    }
+    .day-letter {
+      font-size: 11px; color: #3d4268; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .day-pill.active .day-letter { color: #9ba3cc; }
+    .day-num {
+      font-size: 15px; font-weight: 500; color: #2e3357;
+    }
+    .day-pill.active .day-num { color: #c8cbdf; }
+    .day-dot {
+      display: none;
+      width: 4px; height: 4px;
+      background: #5c6fd4; border-radius: 50%;
+      margin-top: 1px;
+    }
+    .day-pill.today-pill.active .day-dot { background: #a07fc9; }
+
+    /* Week label */
+    .week-label {
+      font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #353a60;
+      padding: 16px 22px 10px;
+      display: flex; justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .week-nav { display: flex; gap: 10px; }
+    .week-nav button {
+      background: none; border: none;
+      color: #3d4268; cursor: pointer;
+      font-size: 16px; padding: 2px 6px;
+      border-radius: 6px; transition: color 0.1s;
+    }
+    .week-nav button:hover { color: #7b83c9; }
+
+    /* Timeline */
+    .timeline {
+      flex: 1; overflow-y: auto;
+      padding: 0 14px 14px;
+    }
+    .time-slot {
+      display: flex; gap: 10px;
+      margin-bottom: 6px;
+    }
+    .time-label {
+      width: 36px; flex-shrink: 0;
+      font-size: 10px; color: #2e3357;
+      padding-top: 12px;
+      text-align: right;
+    }
+    .slot-col { flex: 1; min-width: 0; }
+    .slot-line {
+      border-top: 1px solid #111528;
+      height: 1px; margin-top: 12px;
+    }
+
+    /* Class block */
+    .class-block {
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 6px;
+      border-left: 3px solid transparent;
+      position: relative;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .class-block:hover { opacity: 0.85; }
+    .class-block.now-block {
+      box-shadow: 0 0 0 1px rgba(92,111,212,0.3);
+    }
+    .cb-subject {
+      font-size: 13px; font-weight: 500;
+      margin-bottom: 3px;
+    }
+    .cb-meta {
+      display: flex; gap: 8px; align-items: center;
+    }
+    .cb-time { font-size: 11px; opacity: 0.65; }
+    .cb-room {
+      font-size: 10px;
+      background: rgba(0,0,0,0.25);
+      padding: 1px 7px; border-radius: 8px;
+    }
+    .cb-now-badge {
+      position: absolute; top: 8px; right: 10px;
+      font-size: 9px; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .empty-day {
+      text-align: center; padding: 40px 20px;
+      color: #2e3357; font-size: 13px; line-height: 1.9;
+    }
+    .empty-star { font-size: 26px; margin-bottom: 10px; display: block; }
+
+    /* Legend */
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 0 14px 14px;
+      flex-shrink: 0;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 10px; color: #3d4268;
+    }
+    .legend-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      display: flex; justify-content: space-around;
+      padding: 14px 10px 28px;
+      border-top: 1px solid #111528;
+      background: #0a0d1a; flex-shrink: 0;
+    }
+    .nav-item {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 4px;
+      font-size: 10px; color: #2e3357;
+      text-decoration: none; padding: 4px 14px;
+      transition: color 0.15s;
+    }
+    .nav-item.active { color: #7b83c9; }
+    .nav-item:hover { color: #5c6494; }
+    .nav-icon { font-size: 20px; }
+
+    /* Edit overlay */
+    .overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(6,8,18,0.92); z-index: 100;
+      justify-content: center; align-items: flex-end;
+    }
+    .overlay.open { display: flex; }
+    .edit-panel {
+      width: 100%; max-width: 390px;
+      background: #0a0d1a;
+      border-radius: 24px 24px 0 0;
+      border-top: 1px solid #1a1f3a;
+      padding: 20px 20px 36px;
+      animation: slideUp 0.22s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(60px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+    .panel-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; color: #e8eaf6; margin-bottom: 16px;
+    }
+    .field-row { margin-bottom: 12px; }
+    .field-label {
+      font-size: 10px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #353a60; margin-bottom: 5px;
+    }
+    .field-input {
+      width: 100%; background: #0e1123;
+      border: 1px solid #1a1f3a; border-radius: 10px;
+      padding: 9px 12px; font-size: 13px;
+      color: #c8cbdf; font-family: inherit; outline: none;
+      transition: border-color 0.15s;
+    }
+    .field-input:focus { border-color: #2e3668; }
+    .field-input option { background: #0e1123; }
+    .panel-actions {
+      display: flex; gap: 8px; margin-top: 16px;
+    }
+    .btn-save {
+      flex: 1; background: #1e2548;
+      border: 1px solid #2e3668; border-radius: 12px;
+      padding: 10px; font-size: 13px; font-weight: 500;
+      color: #e8eaf6; cursor: pointer; font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-save:hover { background: #262d52; }
+    .btn-delete {
+      background: #1a0e1a; border: 1px solid #3a1f3a;
+      border-radius: 12px; padding: 10px 16px;
+      font-size: 13px; color: #c97fa0;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-delete:hover { background: #22102a; }
+    .btn-cancel {
+      background: none; border: 1px solid #1a1f3a;
+      border-radius: 12px; padding: 10px 14px;
+      font-size: 13px; color: #5c6494;
+      cursor: pointer; font-family: inherit;
+    }
+    .btn-cancel:hover { border-color: #262d52; color: #7b83c9; }
+    .add-btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; width: 100%;
+      background: #0e1123; border: 1px dashed #1e2548;
+      border-radius: 12px; padding: 10px;
+      font-size: 12px; color: #3d4268;
+      cursor: pointer; font-family: inherit; margin-top: 4px;
+      transition: all 0.15s;
+    }
+    .add-btn:hover { border-color: #2e3668; color: #7b83c9; }
+    .color-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .color-swatch {
+      width: 26px; height: 26px; border-radius: 50%;
+      cursor: pointer; border: 2px solid transparent;
+      transition: border-color 0.1s;
+    }
+    .color-swatch.selected { border-color: #fff; }
+  </style>
+</head>
+<body>
+<div class="phone">
+
+  <div class="status-bar">
+    <span id="clock">9:41</span>
+    <span>✦✦✦</span>
+  </div>
+
+  <div class="header-area">
+    <a class="back-link" href="school.html">← School</a>
+    <div class="page-title">My <span>Schedule</span></div>
+    <div class="page-sub" id="week-range">This week</div>
+  </div>
+
+  <div class="day-selector" id="day-selector"></div>
+
+  <div class="week-label">
+    <span id="day-heading">Monday</span>
+    <div class="week-nav">
+      <button id="prev-week" title="Previous week">‹</button>
+      <button id="next-week" title="Next week">›</button>
+    </div>
+  </div>
+
+  <div class="timeline" id="timeline"></div>
+  <div class="legend" id="legend"></div>
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="school.html"><div class="nav-icon">🏠</div><span>Home</span></a>
+    <a class="nav-item" href="notes.html"><div class="nav-icon">📓</div><span>Notes</span></a>
+    <a class="nav-item active" href="schedule.html"><div class="nav-icon">🗓</div><span>Schedule</span></a>
+    <a class="nav-item" href="homework.html"><div class="nav-icon">📌</div><span>Tasks</span></a>
+  </nav>
+</div>
+
+<!-- Edit overlay -->
+<div class="overlay" id="overlay">
+  <div class="edit-panel" id="edit-panel">
+    <div class="panel-title" id="panel-title">Class</div>
+
+    <div class="field-row">
+      <div class="field-label">Subject</div>
+      <input class="field-input" id="f-subject" type="text" placeholder="e.g. Mathematics" />
+    </div>
+    <div class="field-row">
+      <div class="field-label">Day</div>
+      <select class="field-input" id="f-day">
+        <option>Monday</option><option>Tuesday</option>
+        <option>Wednesday</option><option>Thursday</option>
+        <option>Friday</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <div class="field-row" style="flex:1;">
+        <div class="field-label">Start time</div>
+        <input class="field-input" id="f-start" type="time" value="09:00" />
+      </div>
+      <div class="field-row" style="flex:1;">
+        <div class="field-label">End time</div>
+        <input class="field-input" id="f-end" type="time" value="10:00" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-label">Room</div>
+      <input class="field-input" id="f-room" type="text" placeholder="e.g. Rm 204" />
+    </div>
+    <div class="field-row">
+      <div class="field-label">Color</div>
+      <div class="color-row" id="color-row"></div>
+    </div>
+
+    <div class="panel-actions">
+      <button class="btn-save" id="btn-save">Save ✦</button>
+      <button class="btn-delete" id="btn-delete">Remove</button>
+      <button class="btn-cancel" id="btn-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS = [
+  '#5c6fd4','#a07fc9','#5ba8a0','#c97fa0',
+  '#7ba8c9','#c9a07f','#7fc97f','#c97f7f',
+  '#9f7fc9','#7fc9b8',
+];
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+const HOURS = ['8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
+
+// Default schedule
+const DEFAULT_CLASSES = [
+  { id:'1', day:'Monday',    subject:'Literature',   start:'08:30', end:'10:00', room:'Rm 204',  color:'#5c6fd4' },
+  { id:'2', day:'Monday',    subject:'Mathematics',  start:'10:00', end:'11:30', room:'Rm 118',  color:'#a07fc9' },
+  { id:'3', day:'Monday',    subject:'Art & Design', start:'13:00', end:'14:30', room:'Studio',  color:'#5ba8a0' },
+  { id:'4', day:'Monday',    subject:'Photography',  start:'14:30', end:'16:00', room:'Rm 301',  color:'#c97fa0' },
+  { id:'5', day:'Tuesday',   subject:'History',      start:'09:00', end:'10:30', room:'Rm 205',  color:'#7ba8c9' },
+  { id:'6', day:'Tuesday',   subject:'Music',        start:'11:00', end:'12:30', room:'Hall B',  color:'#c9a07f' },
+  { id:'7', day:'Tuesday',   subject:'PE',           start:'14:00', end:'15:30', room:'Gym',     color:'#7fc97f' },
+  { id:'8', day:'Wednesday', subject:'Mathematics',  start:'08:30', end:'10:00', room:'Rm 118',  color:'#a07fc9' },
+  { id:'9', day:'Wednesday', subject:'Literature',   start:'10:00', end:'11:30', room:'Rm 204',  color:'#5c6fd4' },
+  { id:'10',day:'Wednesday', subject:'Science',      start:'13:00', end:'14:30', room:'Lab 2',   color:'#7fc9b8' },
+  { id:'11',day:'Thursday',  subject:'Art & Design', start:'09:00', end:'10:30', room:'Studio',  color:'#5ba8a0' },
+  { id:'12',day:'Thursday',  subject:'History',      start:'11:30', end:'13:00', room:'Rm 205',  color:'#7ba8c9' },
+  { id:'13',day:'Thursday',  subject:'Photography',  start:'14:00', end:'15:30', room:'Rm 301',  color:'#c97fa0' },
+  { id:'14',day:'Friday',    subject:'Science',      start:'08:30', end:'10:00', room:'Lab 2',   color:'#7fc9b8' },
+  { id:'15',day:'Friday',    subject:'Music',        start:'10:00', end:'11:30', room:'Hall B',  color:'#c9a07f' },
+];
+
+let classes = JSON.parse(localStorage.getItem('lily_schedule') || 'null') || DEFAULT_CLASSES;
+let selectedDay = DAYS[Math.min(new Date().getDay() - 1, 4)];
+if (new Date().getDay() === 0 || new Date().getDay() === 6) selectedDay = 'Monday';
+let editingId = null;
+let selectedColor = COLORS[0];
+let weekOffset = 0;
+
+function saveClasses() {
+  localStorage.setItem('lily_schedule', JSON.stringify(classes));
+}
+
+// ── Clock ──
+function updateClock() {
+  const d = new Date();
+  document.getElementById('clock').textContent =
+    d.getHours().toString().padStart(2,'0') + ':' +
+    d.getMinutes().toString().padStart(2,'0');
+}
+updateClock(); setInterval(updateClock, 60000);
+
+// ── Week dates ──
+function getWeekDates(offset) {
+  const now = new Date();
+  const dow = now.getDay(); // 0=Sun
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1) + offset * 7);
+  return DAYS.map((_, i) => {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    return d;
+  });
+}
+
+function renderDaySelector() {
+  const sel = document.getElementById('day-selector');
+  const dates = getWeekDates(weekOffset);
+  const todayStr = new Date().toDateString();
+  sel.innerHTML = DAYS.map((day, i) => {
+    const d = dates[i];
+    const isToday = d.toDateString() === todayStr;
+    const isActive = day === selectedDay;
+    return `<div class="day-pill${isActive ? ' active' : ''}${isToday ? ' today-pill' : ''}"
+      onclick="selectDay('${day}')">
+      <div class="day-letter">${day.slice(0,3)}</div>
+      <div class="day-num">${d.getDate()}</div>
+      <div class="day-dot"></div>
+    </div>`;
+  }).join('');
+
+  // week range label
+  const first = dates[0], last = dates[4];
+  const fmt = d => d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+  document.getElementById('week-range').textContent = fmt(first) + ' – ' + fmt(last);
+}
+
+function selectDay(day) {
+  selectedDay = day;
+  document.getElementById('day-heading').textContent = day;
+  renderDaySelector();
+  renderTimeline();
+}
+
+document.getElementById('prev-week').onclick = () => { weekOffset--; renderDaySelector(); };
+document.getElementById('next-week').onclick = () => { weekOffset++; renderDaySelector(); };
+
+// ── Timeline ──
+function timeToMins(t) {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+function fmtTime(t) {
+  const [h, m] = t.split(':');
+  return h + ':' + m;
+}
+
+function renderTimeline() {
+  const tl = document.getElementById('timeline');
+  const dayClasses = classes.filter(c => c.day === selectedDay)
+    .sort((a, b) => timeToMins(a.start) - timeToMins(b.start));
+
+  if (dayClasses.length === 0) {
+    tl.innerHTML = `<div class="empty-day">
+      <span class="empty-star">✦</span>
+      No classes on ${selectedDay}.<br>
+      <span style="font-size:11px;color:#2a2f52;">Tap + below to add one!</span>
+    </div>
+    <button class="add-btn" onclick="openAdd()">＋ Add a class</button>`;
+    return;
+  }
+
+  const now = new Date();
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const todayName = DAYS[Math.min(now.getDay() - 1, 4)];
+  const isToday = selectedDay === todayName && now.getDay() >= 1 && now.getDay() <= 5;
+
+  tl.innerHTML = dayClasses.map(c => {
+    const startM = timeToMins(c.start);
+    const endM   = timeToMins(c.end);
+    const isNow  = isToday && nowMins >= startM && nowMins < endM;
+    const hex = c.color;
+    const bg  = hex + '18';
+    const border = hex;
+    return `
+      <div class="time-slot">
+        <div class="time-label">${fmtTime(c.start)}</div>
+        <div class="slot-col">
+          <div class="class-block${isNow ? ' now-block' : ''}"
+            style="background:${bg};border-left-color:${border};color:${hex};"
+            onclick="openEdit('${c.id}')">
+            <div class="cb-subject">${esc(c.subject)}</div>
+            <div class="cb-meta">
+              <span class="cb-time">${fmtTime(c.start)} – ${fmtTime(c.end)}</span>
+              <span class="cb-room">${esc(c.room)}</span>
+            </div>
+            ${isNow ? '<div class="cb-now-badge">Now ✦</div>' : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('') + `<button class="add-btn" style="margin-top:8px;" onclick="openAdd()">＋ Add a class</button>`;
+
+  renderLegend();
+}
+
+function renderLegend() {
+  const subjects = {};
+  classes.forEach(c => { subjects[c.subject] = c.color; });
+  document.getElementById('legend').innerHTML = Object.entries(subjects).map(([s, col]) =>
+    `<div class="legend-item">
+      <div class="legend-dot" style="background:${col};"></div>
+      <span>${esc(s)}</span>
+    </div>`
+  ).join('');
+}
+
+// ── Edit / Add overlay ──
+function buildColorRow(selected) {
+  document.getElementById('color-row').innerHTML = COLORS.map(c =>
+    `<div class="color-swatch${c === selected ? ' selected' : ''}"
+      style="background:${c};"
+      onclick="pickColor('${c}')"></div>`
+  ).join('');
+  selectedColor = selected;
+}
+
+function openAdd() {
+  editingId = null;
+  document.getElementById('panel-title').textContent = 'New Class';
+  document.getElementById('f-subject').value = '';
+  document.getElementById('f-day').value = selectedDay;
+  document.getElementById('f-start').value = '09:00';
+  document.getElementById('f-end').value = '10:00';
+  document.getElementById('f-room').value = '';
+  document.getElementById('btn-delete').style.display = 'none';
+  buildColorRow(COLORS[0]);
+  document.getElementById('overlay').classList.add('open');
+}
+
+function openEdit(id) {
+  const c = classes.find(x => x.id === id);
+  if (!c) return;
+  editingId = id;
+  document.getElementById('panel-title').textContent = c.subject;
+  document.getElementById('f-subject').value = c.subject;
+  document.getElementById('f-day').value = c.day;
+  document.getElementById('f-start').value = c.start;
+  document.getElementById('f-end').value = c.end;
+  document.getElementById('f-room').value = c.room;
+  document.getElementById('btn-delete').style.display = '';
+  buildColorRow(c.color);
+  document.getElementById('overlay').classList.add('open');
+}
+
+function pickColor(c) {
+  selectedColor = c;
+  document.querySelectorAll('.color-swatch').forEach(el => {
+    el.classList.toggle('selected', el.style.background === c ||
+      el.style.backgroundColor === c);
+  });
+}
+
+document.getElementById('btn-cancel').onclick = closeOverlay;
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeOverlay();
+});
+
+document.getElementById('btn-save').onclick = () => {
+  const subject = document.getElementById('f-subject').value.trim();
+  const day     = document.getElementById('f-day').value;
+  const start   = document.getElementById('f-start').value;
+  const end     = document.getElementById('f-end').value;
+  const room    = document.getElementById('f-room').value.trim();
+  if (!subject) return;
+
+  if (editingId) {
+    const idx = classes.findIndex(c => c.id === editingId);
+    if (idx > -1) classes[idx] = { id: editingId, day, subject, start, end, room, color: selectedColor };
+  } else {
+    classes.push({ id: Date.now().toString(), day, subject, start, end, room, color: selectedColor });
+  }
+  saveClasses();
+  selectedDay = day;
+  closeOverlay();
+  renderDaySelector();
+  renderTimeline();
+  document.getElementById('day-heading').textContent = selectedDay;
+};
+
+document.getElementById('btn-delete').onclick = () => {
+  if (!editingId) return;
+  classes = classes.filter(c => c.id !== editingId);
+  saveClasses();
+  closeOverlay();
+  renderTimeline();
+};
+
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Init ──
+document.getElementById('day-heading').textContent = selectedDay;
+renderDaySelector();
+renderTimeline();
+</script>
+</body>
+</html>
