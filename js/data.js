@@ -81,7 +81,7 @@ const EPISODES = [
     image: "images/ep3.jpg",
     thumb: "images/ep3-thumb.jpg",
   },
-];
+
 
 function getEpisode(num) {
   return EPISODES.find((e) => e.number === Number(num));
