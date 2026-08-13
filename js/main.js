@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   spawnEmbers(document.querySelector(".ember-field"));
-  renderHero();
   renderCast();
   renderEpisodeList();
 });
