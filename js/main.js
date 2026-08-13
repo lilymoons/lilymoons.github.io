@@ -45,7 +45,7 @@ function renderCast() {
   mount.innerHTML = CHARACTERS.map(
     (c) => `
     <article class="cast-card">
-      <div class="cast-avatar">${renderAvatarSVG(c.avatar)}</div>
+      <div class="cast-avatar"><img src="${c.avatar}" alt="${c.name}"></div>
       <h3 class="cast-name">${c.name}</h3>
       <p class="cast-role">${c.role}</p>
       <p class="cast-blurb">${c.blurb}</p>
