@@ -66,11 +66,20 @@ Each episode is just **one tall vertical image** — export your finished page f
 
 That's it — the reader page just displays that one image full-width, scrolling top to bottom like the real Webtoon app.
 
-Cast avatars on the home page are still generated SVG placeholders (in `js/scenes.js` / the `avatar` field in `js/data.js`) — swap those the same way if you'd rather use drawn portraits: replace `renderAvatarSVG(c.avatar)` in `js/main.js` with an `<img>` tag.
+## Adding your own art (cast + cover)
+
+Cast avatars and the home page hero cover are plain images too:
+
+- Cast: set each character's `avatar` field in `js/data.js` to an image path, e.g. `avatar: "images/wren.jpg"`. Square-ish images work best — they're cropped to a circle.
+- Hero cover: replace `images/cover.jpg` (referenced directly in `index.html`) with your own artwork. Wide (16:9-ish) images sit nicest under the title.
+
+## The "New" badge
+
+The badge on the episode list is automatic — it always lands on whichever episode has the highest `number` in `js/data.js`. Just add new episodes to the bottom of the `EPISODES` array and the badge moves there on its own; there's no flag to update by hand.
 
 ## Adding a new episode
 
-Add a new object to the `EPISODES` array in `js/data.js` (copy an existing one as a template) with its own `image` and `thumb`. It'll automatically appear in the home page list and slot into the Next/Previous navigation in the reader.
+Add a new object to the `EPISODES` array in `js/data.js` (copy an existing one as a template) with its own `image` and `thumb`. It'll automatically appear in the home page list (with the "New" badge, since it has the highest number) and slot into the Next/Previous navigation in the reader.
 
 ## Editing the story
 

@@ -16,8 +16,6 @@ function spawnEmbers(field) {
   }
 }
 
-
-
 function renderCast() {
   const mount = document.getElementById("castGrid");
   if (!mount) return;
@@ -35,19 +33,6 @@ function renderCast() {
 function renderEpisodeList() {
   const mount = document.getElementById("episodeList");
   if (!mount) return;
-  mount.innerHTML = EPISODES.map(
-    (ep) => `
-    <a class="ep-card" href="chapter.html?ep=${ep.number}">
-      <div class="ep-thumb">
-        <img src="${ep.thumb || ep.image}" alt="${ep.title}">
-        <span class="ep-num">EP ${ep.number}</span>
-      </div>
-      <div class="ep-meta">
-        <div class="ep-title-row">
-          <h3 class="ep-title">${ep.title}</h3>
-          function renderEpisodeList() {
-  const mount = document.getElementById("episodeList");
-  if (!mount) return;
   const latestNumber = Math.max(...EPISODES.map((e) => e.number));
 
   mount.innerHTML = EPISODES.map(
@@ -61,14 +46,6 @@ function renderEpisodeList() {
         <div class="ep-title-row">
           <h3 class="ep-title">${ep.title}</h3>
           ${ep.number === latestNumber ? '<span class="ep-badge">New</span>' : ""}
-        </div>
-        <p class="ep-sub">${ep.subtitle}</p>
-        <span class="ep-date">${ep.date}</span>
-      </div>
-      <span class="ep-arrow">&#8250;</span>
-    </a>`
-  ).join("");
-}
         </div>
         <p class="ep-sub">${ep.subtitle}</p>
         <span class="ep-date">${ep.date}</span>
