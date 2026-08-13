@@ -18,28 +18,28 @@ const CHARACTERS = [
     name: "Wren Sato",
     role: "The Seer",
     blurb: "Sees spirits only during halflight. Inherited the gift, and the scarf, from her grandmother.",
-    avatar: { base: "#4a3b78", accent: "#ff6b5b" },
+    avatar: "images/wren.jpg",
   },
   {
     id: "bram",
     name: "Bram",
     role: "The Keeper",
     blurb: "Bound to the lighthouse. Doesn't remember dying — and remembers less every night.",
-    avatar: { base: "#8a7ac4", accent: "#f4ead9" },
+    avatar: "images/bram.jpg",
   },
   {
     id: "nell",
     name: "Nell Osei",
     role: "The Skeptic",
     blurb: "Runs the failing bookshop with Wren. Believes in records, tide charts, and nothing she can't footnote.",
-    avatar: { base: "#2e6b63", accent: "#f4ead9" },
+    avatar: "images/nell.jpg",
   },
   {
     id: "tidekeeper",
     name: "The Tidekeeper",
     role: "The Collector",
     blurb: "Comes for spirits who overstay their halflight. No one has ever bargained with it and won.",
-    avatar: { base: "#12241f", accent: "#2e6b63" },
+    avatar: "images/tidekeeper.jpg",
   },
 ];
 
