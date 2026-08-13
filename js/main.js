@@ -60,7 +60,7 @@ function renderEpisodeList() {
     (ep) => `
     <a class="ep-card" href="chapter.html?ep=${ep.number}">
       <div class="ep-thumb">
-        ${renderPanelSVG({ height: 700, ...ep.thumb })}
+        <img src="${ep.thumb || ep.image}" alt="${ep.title}">
         <span class="ep-num">EP ${ep.number}</span>
       </div>
       <div class="ep-meta">

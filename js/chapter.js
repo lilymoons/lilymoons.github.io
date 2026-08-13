@@ -61,9 +61,7 @@ function renderEpisodeHeader(ep) {
 
 function renderPanels(ep) {
   const mount = document.getElementById("panels");
-  mount.innerHTML = ep.panels
-    .map((p) => `<div class="panel">${renderPanelSVG(p)}</div>`)
-    .join("");
+  mount.innerHTML = `<img class="comic-image" src="${ep.image}" alt="${ep.title} — full episode">`;
 }
 
 function renderEnd(ep) {
@@ -80,7 +78,7 @@ function renderEnd(ep) {
   if (next) {
     nextMount.innerHTML = `
       <a class="next-card" href="chapter.html?ep=${next.number}">
-        <div class="thumb">${renderPanelSVG({ height: 700, ...next.thumb })}</div>
+        <div class="thumb"><img src="${next.thumb || next.image}" alt="${next.title}"></div>
         <div class="txt">
           <div class="lbl">Next episode</div>
           <div class="ttl">Ep ${next.number} · ${next.title}</div>

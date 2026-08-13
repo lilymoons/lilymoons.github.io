@@ -185,7 +185,7 @@ button{ font-family:inherit; cursor:pointer; }
   flex:0 0 auto; width:96px; height:96px; border-radius:10px; overflow:hidden;
   border:1px solid var(--line); position:relative;
 }
-.ep-thumb svg{ width:100%; height:100%; }
+.ep-thumb svg, .ep-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 .ep-num{
   position:absolute; bottom:4px; left:6px; font-family:var(--font-ui); font-size:0.68rem;
   background:rgba(18,12,34,0.75); padding:2px 6px; border-radius:6px; letter-spacing:0.04em;
@@ -245,11 +245,8 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .ep-header .ep-header-sub{ color:var(--muted); font-size:0.95rem; }
 
-.panels{ max-width:var(--max); margin:0 auto; }
-.panel{
-  position:relative; width:100%; line-height:0; /* no gaps, true webtoon feel */
-}
-.panel svg{ width:100%; height:auto; display:block; }
+.panels{ max-width:var(--max); margin:0 auto; line-height:0; }
+.comic-image{ width:100%; height:auto; display:block; }
 
 .caption-box{
   position:absolute; max-width:62%; padding:10px 14px; font-family:var(--font-body);
@@ -301,7 +298,7 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .next-card:hover{ transform:translateY(-3px); border-color:var(--ember); }
 .next-card .thumb{ width:56px; height:56px; border-radius:8px; overflow:hidden; flex:0 0 auto; }
-.next-card .thumb svg{ width:100%; height:100%; }
+.next-card .thumb svg, .next-card .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 .next-card .txt{ text-align:left; flex:1; min-width:0; }
 .next-card .txt .lbl{ font-family:var(--font-ui); font-size:0.66rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--ember-lt); }
 .next-card .txt .ttl{ font-family:var(--font-display); font-weight:600; font-size:1.1rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
