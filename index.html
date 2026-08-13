@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halflight — a webtoon</title>
+<meta name="description" content="Halflight: every dusk lasts nineteen minutes. That's how long the dead have to be seen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="ember-field"></div>
+
+<nav class="site-nav">
+  <a class="brand" href="index.html"><span class="mark"></span>Halflight</a>
+  <div class="nav-links">
+    <a href="#episodes">Episodes</a>
+    <a href="#cast">Cast</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">A twilight drama, updates weekly</p>
+  <h1>HALFLIGHT</h1>
+  <p class="tagline">Every dusk lasts nineteen minutes. That's how long the dead have to be seen — and how long Wren has to figure out why the lighthouse keeps calling more of them home.</p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="chapter.html?ep=1">Start reading &#8250;</a>
+    <a class="btn-secondary" href="#episodes">See all episodes</a>
+  </div>
+  <div class="hero-cover" id="heroCover"></div>
+</header>
+
+<div class="twilight-divider">
+  <div class="line"></div>
+  <div class="spark" style="left:30%; animation-delay:0s;"></div>
+  <div class="spark" style="left:55%; animation-delay:1.1s;"></div>
+  <div class="spark" style="left:75%; animation-delay:2.2s;"></div>
+</div>
+
+<section class="section about">
+  <h2>About</h2>
+  <p>In the fishing town of Merrow Point, dusk doesn't just fall — it opens. For nineteen minutes between daylight and dark, the boundary between the living and the lost goes thin, and Wren Sato can see who's still waiting on the other side.</p>
+  <p>This year the lighthouse is drawing more spirits than anyone remembers, and one of them — Bram, bound to the rocks since before Wren was born — is starting to forget his own name. She has until the light runs out to find out why.</p>
+</section>
+
+<div class="twilight-divider">
+  <div class="line"></div>
+  <div class="spark" style="left:20%; animation-delay:0.5s;"></div>
+  <div class="spark" style="left:60%; animation-delay:1.8s;"></div>
+</div>
+
+<section class="section" id="cast">
+  <h2>Cast</h2>
+  <p class="lede">Four people (one of them not, strictly, alive) caught in the same nineteen minutes.</p>
+  <div class="cast-grid" id="castGrid"></div>
+</section>
+
+<section class="section" id="episodes">
+  <h2>Episodes</h2>
+  <p class="lede">New episodes every week. Start from the beginning, or jump back in where you left off.</p>
+  <div class="ep-list" id="episodeList"></div>
+</section>
+
+<footer class="site-footer">
+  Halflight &middot; an original webtoon-style series &middot; built as a reader template
+</footer>
+
+<script src="js/scenes.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
