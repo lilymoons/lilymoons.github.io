@@ -62,20 +62,7 @@ function renderEpisodeHeader(ep) {
 function renderPanels(ep) {
   const mount = document.getElementById("panels");
   mount.innerHTML = ep.panels
-    .map((p) => {
-      const svg = renderPanelSVG(p);
-      const caption = p.caption
-        ? `<div class="caption-box ${p.caption.pos}">${p.caption.text}</div>`
-        : "";
-      let bubble = "";
-      if (p.bubble) {
-        const b = p.bubble;
-        const ghostClass = b.ghost ? "ghost" : "";
-        const speakerLabel = b.speaker ? `<span class="speaker">${b.speaker}</span>` : "";
-        bubble = `<div class="bubble ${b.side} ${b.pos} ${ghostClass}">${speakerLabel}${b.text}</div>`;
-      }
-      return `<div class="panel">${svg}${caption}${bubble}</div>`;
-    })
+    .map((p) => `<div class="panel">${renderPanelSVG(p)}</div>`)
     .join("");
 }
 
