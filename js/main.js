@@ -17,27 +17,7 @@ function spawnEmbers(field) {
   }
 }
 
-function renderHero() {
-  const mount = document.getElementById("heroCover");
-  if (!mount) return;
-  mount.innerHTML = renderPanelSVG({
-    height: 460,
-    sky: ["#3a2a5c", "#ff6b5b"],
-    ground: "water",
-    groundTint: "#1c3f3a",
-    figures: [
-      { x: 620, y: 380, scale: 0.65, color: "#0c0916", pose: "stand" },
-      { x: 760, y: 380, scale: 0.6, color: "#ffb199", pose: "stand", glow: true },
-    ],
-    orbs: [
-      { x: 150, y: 150, r: 10, opacity: 0.55 },
-      { x: 260, y: 220, r: 6, opacity: 0.4 },
-      { x: 90, y: 260, r: 8, opacity: 0.45 },
-      { x: 700, y: 120, r: 14, opacity: 0.6 },
-    ],
-    alt: "Wren and Bram silhouetted before the lighthouse at dusk",
-  });
-}
+
 
 function renderCast() {
   const mount = document.getElementById("castGrid");
